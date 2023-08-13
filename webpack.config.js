@@ -1,24 +1,17 @@
+/* eslint-disable no-undef */
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
-<<<<<<< HEAD
 const HtmlPlugin = require('html-webpack-plugin');
-=======
->>>>>>> module1-task3
 
 module.exports = {
   entry: './src/main.js',
   output: {
-<<<<<<< HEAD
     filename: 'bundle.[contenthash].js',
-=======
-    filename: 'bundle.js',
->>>>>>> module1-task3
     path: path.resolve(__dirname, 'build'),
     clean: true,
   },
   devtool: 'source-map',
   plugins: [
-<<<<<<< HEAD
     new HtmlPlugin({
       template: 'public/index.html',
     }),
@@ -45,12 +38,10 @@ module.exports = {
           },
         },
       },
-    ]
-  }
-=======
-    new CopyPlugin({
-      patterns: [{ from: 'public' }],
-    }),
-  ],
->>>>>>> module1-task3
+      {
+        test: /\.css$/i,
+        use: ['style-loader', 'css-loader']
+      },
+    ],
+  },
 };

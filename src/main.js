@@ -1,13 +1,10 @@
-import NewTaskButtonView from './view/new-task-button-view.js';
 import FilterView from './view/filter-view.js';
 import {render} from './render.js';
-import BoardPresenter from './presenter/presenter.js';
+import ContainerPresenter from './presenter/presenter.js';
 
-const siteMainElement = document.querySelector('.main');
-const siteHeaderElement = siteMainElement.querySelector('.main__control');
-const boardPresenter = new BoardPresenter({boardContainer: siteMainElement});
+const mainElement = document.querySelector('.main');
+const containerPresenter = new ContainerPresenter(mainElement);
 
-render(new NewTaskButtonView(), siteHeaderElement);
-render(new FilterView(), siteMainElement);
+render(new FilterView(), mainElement);
 
-boardPresenter.init();
+containerPresenter.init();
