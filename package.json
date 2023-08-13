@@ -12,8 +12,12 @@
   ],
   "scripts": {
     "lint": "eslint src/",
+<<<<<<< HEAD
     "build": "webpack --mode production",
     "start": "webpack serve --mode development --open"
+=======
+    "build": "webpack --mode production"
+>>>>>>> module1-task3
   },
   "devDependencies": {
     "eslint": "8.38.0",
