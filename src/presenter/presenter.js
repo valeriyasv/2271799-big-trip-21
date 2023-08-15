@@ -1,26 +1,41 @@
-import AddPointView from '../view/add-point-view.js';
 import EditPointView from '../view/edit-point-view.js';
 import SortView from '../view/sort-view.js';
 import PointListView from '../view/point-list-view.js';
+import PointView from '../view/point-view.js';
+
 import { render } from '../render.js';
 
+const testArr = [
+  {
+    icon: 'img/icons/taxi.png',
+    direction: 'Vladivostok',
+    price: '150'
+  },
+  {
+    icon: 'img/icons/flight.png',
+    direction: 'Moskow',
+    price: '670'
+  },
+  {
+    icon: 'img/icons/drive.png',
+    direction: 'Khabarovsk',
+    price: '89'
+  }
+];
 export default class ContainerPresenter {
-  createPoint = new AddPointView();
-  editPoint = new EditPointView();
-  sortView = new SortView();
-  currentPoint = new PointListView();
+  pointList = new PointListView();
 
-  constructor(container) {
+  constructor({container}) {
     this.container = container;
   }
 
   init() {
-    render(new EditPointView(), this.editPoint.getElement());
-    render(new AddPointView, this.createPoint.getElement());
-    render(new SortView(), this.sortView.getElement());
+    render(new SortView(), this.container);
+    render(this.pointList, this.container);
+    render(new EditPointView(), this.pointList.getElement());
 
     for (let i = 0; i < 3; i++) {
-      render(new PointListView(), this.currentPoint.getElement());
+      render(new PointView(testArr[i].icon, testArr[i].direction, testArr[i].price), this.pointList.getElement());
     }
   }
 }

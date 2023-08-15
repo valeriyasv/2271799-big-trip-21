@@ -1,10 +1,14 @@
 import {createElement} from '../render.js';
-import { addPointTemplate } from '../template/add-point-template.js';
 
+function addNewEvent() {
+  return (
+    `<button class='trip-main__event-add-btn  btn  btn--big  btn--yellow' type='button'>New event</button>`
+  );
+}
 
-export default class AddPointView {
+export default class NewEventButton {
   getTemplate() {
-    return addPointTemplate(); 
+    return addNewEvent();
   }
 
   getElement() {
