@@ -1,4 +1,4 @@
-import infoView from './view/info-view.js';
+import InfoView from './view/info-view.js';
 import NewEventButton from './view/new-event-button.js';
 import FilterView from './view/filter-view.js';
 import { render } from './render.js';
@@ -11,7 +11,7 @@ const presenter = new ContainerPresenter({
   container: tripEventsElement
 });
 
-render(new infoView(), mainElement);
+render(new InfoView(), mainElement);
 render(new FilterView(), mainElement);
 render(new NewEventButton(), mainElement);
 

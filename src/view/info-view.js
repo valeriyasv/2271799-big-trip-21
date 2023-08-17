@@ -14,7 +14,7 @@ function infoTemplate() {
   );
 }
 
-export default class infoView {
+export default class InfoView {
   getTemplate() {
     return infoTemplate();
   }

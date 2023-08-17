@@ -1,9 +1,9 @@
-/* eslint-disable quotes */
 import {createElement} from '../render.js';
 
 function createPointList () {
   return (
-    `<ul class='trip-events__list'></ul>`
+    `<ul class='trip-events__list'>
+    </ul>`
   );
 }
 export default class PointListView {
