@@ -1,3 +1,4 @@
+import NewTaskButtonView from './view/new-task-button-view.js';
 import FilterView from './view/filter-view.js';
 import {render} from './render.js';
 import BoardPresenter from './presenter/presenter.js';
