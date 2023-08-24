@@ -9,7 +9,6 @@ import ContainerPresenter from './presenter/presenter.js';
 const mainElement = document.querySelector('.trip-main');
 const tripEventsElement = document.querySelector('.trip-events');
 const model = new PointsModel();
-console.log(model)
 const presenter = new ContainerPresenter({
   container: tripEventsElement,
   points: model

@@ -1,7 +1,6 @@
 import {createElement} from '../render.js';
 
 function pointItem (icon, direction, price, offers) {
-  console.log(offers, 'kk');
   return (
     `<li class="trip-events__item">
     <div class="event">

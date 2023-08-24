@@ -4,7 +4,6 @@ import PointListView from '../view/point-list-view.js';
 import PointView from '../view/point-view.js';
 import { render } from '../render.js';
 
-// const testArr = [
 //   {
 //     icon: 'img/icons/taxi.png',
 //     direction: 'Vladivostok',
@@ -33,9 +32,7 @@ export default class ContainerPresenter {
     render(new SortView(), this.container);
     render(this.pointList, this.container);
     render(new EditPointView(), this.pointList.getElement());
-    console.log(this.points.points, 'point')
     this.points.points.forEach((element) => {
-      console.log(element.offers, 'llllllllllllll')
       render(new PointView(element.type.img, element.destination.name, element.price, element.offers), this.pointList.getElement());
     });
   }

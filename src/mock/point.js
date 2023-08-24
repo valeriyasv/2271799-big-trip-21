@@ -1,4 +1,4 @@
-import { OFFERS, TYPES } from '../const';
+import { TYPES } from '../const';
 import { getRandomElement, getRandomPositiveInteger } from './utils';
 import { mockDestination } from './destination';
 import { mockOffers } from './offer';
