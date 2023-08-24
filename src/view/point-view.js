@@ -1,6 +1,7 @@
 import {createElement} from '../render.js';
 
-function pointItem (icon, direction, price) {
+function pointItem (icon, direction, price, offers) {
+  console.log(offers, 'kk');
   return (
     `<li class="trip-events__item">
     <div class="event">
@@ -22,11 +23,15 @@ function pointItem (icon, direction, price) {
       </p>
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
-        <li class="event__offer">
-          <span class="event__offer-title">Rent a car</span>
+      ${
+    offers.map((element) => (
+      `<li class="event__offer">
+          <span class="event__offer-title">${element.title}</span>
           &plus;&euro;&nbsp;
-          <span class="event__offer-price">200</span>
-        </li>
+          <span class="event__offer-price">${element.price}</span>
+        </li>`
+    )).join('')
+    }
       </ul>
       <button class="event__favorite-btn  event__favorite-btn--active" type="button">
         <span class="visually-hidden">Add to favorite</span>
@@ -43,14 +48,15 @@ function pointItem (icon, direction, price) {
 }
 
 export default class PointView {
-  constructor(icon, direction, price) {
+  constructor(icon, direction, price, offers) {
     this.icon = icon;
     this.direction = direction;
     this.price = price;
+    this.offers = offers;
   }
 
   getTemplate() {
-    return pointItem(this.icon, this.direction, this.price);
+    return pointItem(this.icon, this.direction, this.price, this.offers);
   }
 
   getElement() {
