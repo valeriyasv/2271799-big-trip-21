@@ -1,9 +1,9 @@
 import {createElement} from '../render.js';
-import { editPointTemplate } from '../template/edit-point-template.js';
+import { addPointTemplate } from '../template/add-point-template.js';
 
-export default class EditPointView {
+export default class AddPointView {
   getTemplate() {
-    return editPointTemplate();
+    return addPointTemplate();
   }
 
   getElement() {

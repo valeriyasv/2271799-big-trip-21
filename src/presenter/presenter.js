@@ -4,22 +4,6 @@ import PointListView from '../view/point-list-view.js';
 import PointView from '../view/point-view.js';
 import { render } from '../render.js';
 
-//   {
-//     icon: 'img/icons/taxi.png',
-//     direction: 'Vladivostok',
-//     price: '150'
-//   },
-//   {
-//     icon: 'img/icons/flight.png',
-//     direction: 'Moskow',
-//     price: '670'
-//   },
-//   {
-//     icon: 'img/icons/drive.png',
-//     direction: 'Khabarovsk',
-//     price: '89'
-//   }
-// ];
 export default class ContainerPresenter {
   pointList = new PointListView();
 
