@@ -2,7 +2,7 @@
 
 * Студент: [Валерия Савченко](https://up.htmlacademy.ru/ecmascript/21/user/2271799).
 * Наставник: [Юлия Волкова](https://htmlacademy.ru/profile/id423707).
-
+Поток JavaScript2 #21
 ---
 
 _Не удаляйте и не изменяйте папки и файлы:_
