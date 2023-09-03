@@ -1,8 +1,8 @@
+import {render} from './framework/render.js';
 import PointsModel from './model/model.js';
 import InfoView from './view/info-view.js';
 import NewEventButton from './view/new-event-button.js';
 import FilterView from './view/filter-view.js';
-import {render} from './render.js';
 import ContainerPresenter from './presenter/presenter.js';
 
 const mainElement = document.querySelector('.trip-main');
