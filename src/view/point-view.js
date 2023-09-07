@@ -1,6 +1,6 @@
 import AbstractView from '../framework/view/abstract-view';
 
-function pointItem ({type,destination, offers, price}) {
+function pointItem ({type, name, offers, price}) {
   return (
     `<li class="trip-events__item">
     <div class="event">
@@ -8,7 +8,7 @@ function pointItem ({type,destination, offers, price}) {
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="${type.img}" alt="Event type icon">
       </div>
-      <h3 class="event__title">${destination.name}</h3>
+      <h3 class="event__title">${name}</h3>
       <div class="event__schedule">
         <p class="event__time">
           <time class="event__start-time" datetime="2019-03-18T14:30">14:30</time>
@@ -45,7 +45,6 @@ function pointItem ({type,destination, offers, price}) {
   </li>`
   );
 }
-
 export default class PointView extends AbstractView {
   #data = null;
   #handleClick = null;

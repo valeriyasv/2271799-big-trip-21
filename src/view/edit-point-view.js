@@ -17,9 +17,49 @@ function editPointTemplate ({type, destination, offers, price}) {
               <legend class="visually-hidden">Event type</legend>
 
               <div class="event__type-item">
-                <input id="event-type-taxi-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${type.name}">
-                <label class="event__type-label  event__type-label--taxi" for="event-type-tax i-1">${type.name}</label>
-              </div>
+                          <input id="event-type-taxi-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="taxi">
+                          <label class="event__type-label  event__type-label--taxi" for="event-type-taxi-1">Taxi</label>
+                        </div>
+
+                        <div class="event__type-item">
+                          <input id="event-type-bus-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="bus">
+                          <label class="event__type-label  event__type-label--bus" for="event-type-bus-1">Bus</label>
+                        </div>
+
+                        <div class="event__type-item">
+                          <input id="event-type-train-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="train">
+                          <label class="event__type-label  event__type-label--train" for="event-type-train-1">Train</label>
+                        </div>
+
+                        <div class="event__type-item">
+                          <input id="event-type-ship-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="ship">
+                          <label class="event__type-label  event__type-label--ship" for="event-type-ship-1">Ship</label>
+                        </div>
+
+                        <div class="event__type-item">
+                          <input id="event-type-drive-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="drive">
+                          <label class="event__type-label  event__type-label--drive" for="event-type-drive-1">Drive</label>
+                        </div>
+
+                        <div class="event__type-item">
+                          <input id="event-type-flight-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="flight" checked>
+                          <label class="event__type-label  event__type-label--flight" for="event-type-flight-1">Flight</label>
+                        </div>
+
+                        <div class="event__type-item">
+                          <input id="event-type-check-in-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="check-in">
+                          <label class="event__type-label  event__type-label--check-in" for="event-type-check-in-1">Check-in</label>
+                        </div>
+
+                        <div class="event__type-item">
+                          <input id="event-type-sightseeing-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="sightseeing">
+                          <label class="event__type-label  event__type-label--sightseeing" for="event-type-sightseeing-1">Sightseeing</label>
+                        </div>
+
+                        <div class="event__type-item">
+                          <input id="event-type-restaurant-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="restaurant">
+                          <label class="event__type-label  event__type-label--restaurant" for="event-type-restaurant-1">Restaurant</label>
+                        </div>
             </fieldset>
           </div>
         </div>
@@ -76,6 +116,19 @@ function editPointTemplate ({type, destination, offers, price}) {
     }
           </div>
         </section>
+        <section class="event__section  event__section--destination">
+                    <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+                    ${destination.map((items) => (
+      `<p class="event__destination-description">${items.pictures.description}</p>`)).join('')}
+                    <div class="event__photos-container">
+                    ${destination.map((item) => (
+      `<div class="event__photos-tape">
+      <img class="event__photo" src="${item.pictures.src}" alt="Event photo">`
+    )).join('')
+    }
+                    </div>
+                  </div>
+                    </section>
     </form>
   </li>`
   );
@@ -90,6 +143,8 @@ export default class EditPointView extends AbstractView {
     this.#handleClick = onCloseEdit;
     this.element.querySelector('.event__rollup-btn')
       .addEventListener('click', this.#clickHandler);
+    this.element.querySelector('form')
+      .addEventListener('submit', this.#submitHandler);
   }
 
   get template() {
@@ -97,6 +152,11 @@ export default class EditPointView extends AbstractView {
   }
 
   #clickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleClick();
+  };
+
+  #submitHandler = (evt) => {
     evt.preventDefault();
     this.#handleClick();
   };
