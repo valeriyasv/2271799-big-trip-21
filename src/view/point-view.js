@@ -1,14 +1,14 @@
-import {createElement} from '../render.js';
+import AbstractView from '../framework/view/abstract-view';
 
-function pointItem (icon, direction, price, offers) {
+function pointItem ({type, name, offers, price}) {
   return (
     `<li class="trip-events__item">
     <div class="event">
       <time class="event__date" datetime="2019-03-18">MAR 18</time>
       <div class="event__type">
-        <img class="event__type-icon" width="42" height="42" src="${icon}" alt="Event type icon">
+        <img class="event__type-icon" width="42" height="42" src="${type.img}" alt="Event type icon">
       </div>
-      <h3 class="event__title">${direction}</h3>
+      <h3 class="event__title">${name}</h3>
       <div class="event__schedule">
         <p class="event__time">
           <time class="event__start-time" datetime="2019-03-18T14:30">14:30</time>
@@ -45,28 +45,24 @@ function pointItem (icon, direction, price, offers) {
   </li>`
   );
 }
+export default class PointView extends AbstractView {
+  #data = null;
+  #handleClick = null;
 
-export default class PointView {
-  constructor(icon, direction, price, offers) {
-    this.icon = icon;
-    this.direction = direction;
-    this.price = price;
-    this.offers = offers;
+  constructor({data, onEditClick}) {
+    super();
+    this.#data = data;
+    this.#handleClick = onEditClick;
+    this.element.querySelector('.event__rollup-btn')
+      .addEventListener('click', this.#clickHandler);
   }
 
-  getTemplate() {
-    return pointItem(this.icon, this.direction, this.price, this.offers);
+  get template() {
+    return pointItem(this.#data);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
+  #clickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleClick();
+  };
 }
