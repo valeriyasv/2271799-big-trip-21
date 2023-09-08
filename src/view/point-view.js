@@ -8,7 +8,7 @@ function pointItem ({type, name, offers, price}) {
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="${type.img}" alt="Event type icon">
       </div>
-      <h3 class="event__title">${name}</h3>
+      <h3 class="event__title">${type.name} ${name}</h3>
       <div class="event__schedule">
         <p class="event__time">
           <time class="event__start-time" datetime="2019-03-18T14:30">14:30</time>
