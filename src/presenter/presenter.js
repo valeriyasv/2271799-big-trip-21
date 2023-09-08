@@ -37,10 +37,14 @@ export default class ContainerPresenter {
 
     const editPoint = new EditPointView({
       data: dataPoint,
+      onSubmitClick: () => {
+        replaceEditFormToPoint();
+        document.removeEventListener('keydown', escKeyDownHandler);
+      },
       onCloseEdit: () => {
         replaceEditFormToPoint();
         document.addEventListener('keydown', escKeyDownHandler);
-      }
+      },
     });
 
     function replacePointToEditForm() {
