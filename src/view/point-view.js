@@ -48,13 +48,15 @@ function pointItem ({type, name, offers, price}) {
 export default class PointView extends AbstractView {
   #data = null;
   #handleClick = null;
+  #onFavoriteToggle = null;
 
-  constructor({data, onEditClick}) {
+  constructor({data, onEditClick, onFavoriteToggle}) {
     super();
     this.#data = data;
     this.#handleClick = onEditClick;
     this.element.querySelector('.event__rollup-btn')
       .addEventListener('click', this.#clickHandler);
+    this.#onFavoriteToggle = onFavoriteToggle;
   }
 
   get template() {
