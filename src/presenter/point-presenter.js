@@ -32,11 +32,11 @@ export default class PointPresenter {
     this.#pointComponent = new PointView({
       data: this.#point,
       onEditClick: this.#handleEditClick,
+      onFavoriteClick: this.#handleFavoriteClick
     });
     this.#editPointComponent = new EditPointView({
       data: this.#point,
       onSubmitClick: this.#handleFormSubmit,
-      onCloseEdit: this.#handleFormSubmit,
     });
 
     if (prevPointComponent === null || prevEditComponent === null) {
@@ -79,8 +79,12 @@ export default class PointPresenter {
   };
 
   #handleFormSubmit = (point) => {
-    this.#replaceEditFormToPoint();
     this.#handleDataChange(point);
+    this.#replaceEditFormToPoint();
+  };
+
+  #handleFavoriteClick = () => {
+    this.#handleDataChange({...this.#point, isFavorite: !this.#point.isFavorite});
   };
 
   #replacePointToEditForm() {

@@ -22,6 +22,11 @@ export default class ContainerPresenter {
     this.#renderPointList();
   }
 
+  #handlePointChange = (updatedPoint) => {
+    this.#data = updateItem(this.#data, updatedPoint);
+    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
+  };
+
   #handleModeChange = () => {
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
   };
@@ -29,8 +34,8 @@ export default class ContainerPresenter {
   #renderPoint (dataPoint) {
     const pointPresenter = new PointPresenter ({
       pointListContainer: this.#pointList.element,
+      onDataChange: this.#handlePointChange,
       onModeChange: this.#handleModeChange,
-      onDataChange: this.#handlePointChange
     });
 
     pointPresenter.init(dataPoint);
@@ -43,9 +48,4 @@ export default class ContainerPresenter {
     });
     render(this.#pointList, this.#container);
   }
-
-  #handlePointChange = (updatedPoint) => {
-    this.#data = updateItem(this.#data, updatedPoint);
-    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
-  };
 }
