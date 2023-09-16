@@ -1,4 +1,4 @@
-import {render} from '../framework/render.js';
+import {render, RenderPosition } from '../framework/render.js';
 import SortView from '../view/sort-view.js';
 import PointListView from '../view/point-list-view.js';
 import PointPresenter from './point-presenter.js';
@@ -7,6 +7,7 @@ export default class ContainerPresenter {
   #container = null;
   #points = null;
   #pointList = new PointListView();
+  #sortComponent = null;
   #pointPresenters = new Map();
 
   #data = [];
@@ -17,7 +18,7 @@ export default class ContainerPresenter {
   }
 
   init() {
-    render(new SortView(), this.#container);
+    // render(new SortView(), this.#container);
     this.#data = [...this.#points.points];
     this.#renderPointList();
   }
@@ -26,6 +27,18 @@ export default class ContainerPresenter {
     this.#data = updateItem(this.#data, updatedPoint);
     this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
   };
+
+  #handleSortTypeChange = () => {
+
+  };
+
+  #renderSort() {
+    this.#sortComponent = new SortView({
+      onSortTypeChange: this.#handleSortTypeChange
+    });
+
+    render(this.#sortComponent, this.#container, RenderPosition.AFTERBEGIN);
+  }
 
   #handleModeChange = () => {
     this.#pointPresenters.forEach((presenter) => presenter.resetView());
