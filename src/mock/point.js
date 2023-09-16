@@ -4,7 +4,7 @@ import { mockDestination } from './destination';
 import { mockOffers } from './offer';
 const mockPoint = [
   {
-    id: 1,
+    id: crypto.randomUUID(),
     price: getRandomPositiveInteger(),
     dateFrom: '2023-05-23',
     dateTo: '2023-12-19',
@@ -15,7 +15,7 @@ const mockPoint = [
     offers: Array.from({ length: getRandomPositiveInteger(1, 5) }, () => getRandomElement(mockOffers)),
   },
   {
-    id: 2,
+    id: crypto.randomUUID(),
     price: getRandomPositiveInteger(),
     dateFrom: '2023-05-23',
     dateTo: '2023-12-19',
@@ -26,7 +26,7 @@ const mockPoint = [
     offers: Array.from({ length: getRandomPositiveInteger(1, 5) }, () => getRandomElement(mockOffers)),
   },
   {
-    id: 3,
+    id: crypto.randomUUID(),
     price: getRandomPositiveInteger(),
     dateFrom: '2023-05-23',
     dateTo: '2023-12-19',
