@@ -1,67 +1,51 @@
-import {render, replace } from '../framework/render.js';
-import EditPointView from '../view/edit-point-view.js';
+import {render} from '../framework/render.js';
 import SortView from '../view/sort-view.js';
 import PointListView from '../view/point-list-view.js';
-import PointView from '../view/point-view.js';
-
+import PointPresenter from './point-presenter.js';
+import { updateItem } from '../mock/utils.js';
 export default class ContainerPresenter {
-  pointList = new PointListView();
+  #container = null;
+  #points = null;
+  #pointList = new PointListView();
+  #pointPresenters = new Map();
+
+  #data = [];
 
   constructor({container, points}) {
-    this.container = container;
-    this.points = points;
+    this.#container = container;
+    this.#points = points;
   }
 
   init() {
-    render(new SortView(), this.container);
-    this.data = [...this.points.points];
+    render(new SortView(), this.#container);
+    this.#data = [...this.#points.points];
     this.#renderPointList();
   }
 
-  #renderPoints (dataPoint) {
-    const escKeyDownHandler = (evt) => {
-      if (evt.key === 'Escape') {
-        evt.preventDefault();
-        replaceEditFormToPoint();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      }
-    };
+  #handlePointChange = (updatedPoint) => {
+    this.#data = updateItem(this.#data, updatedPoint);
+    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
+  };
 
-    const pointComponent = new PointView({
-      data: dataPoint,
-      onEditClick: () => {
-        replacePointToEditForm();
-        document.addEventListener('keydown', escKeyDownHandler);
-      }
+  #handleModeChange = () => {
+    this.#pointPresenters.forEach((presenter) => presenter.resetView());
+  };
+
+  #renderPoint (dataPoint) {
+    const pointPresenter = new PointPresenter ({
+      pointListContainer: this.#pointList.element,
+      onDataChange: this.#handlePointChange,
+      onModeChange: this.#handleModeChange,
     });
 
-    const editPoint = new EditPointView({
-      data: dataPoint,
-      onSubmitClick: () => {
-        replaceEditFormToPoint();
-        document.removeEventListener('keydown', escKeyDownHandler);
-      },
-      onCloseEdit: () => {
-        replaceEditFormToPoint();
-        document.addEventListener('keydown', escKeyDownHandler);
-      },
-    });
-
-    function replacePointToEditForm() {
-      replace(editPoint, pointComponent);
-    }
-
-    function replaceEditFormToPoint() {
-      replace(pointComponent, editPoint);
-    }
-
-    render(pointComponent, this.pointList.element);
+    pointPresenter.init(dataPoint);
+    this.#pointPresenters.set(dataPoint.id, pointPresenter);
   }
 
-  #renderPointList () {
-    render(this.pointList, this.container);
-    this.data.map((item) => {
-      this.#renderPoints(item);
+  #renderPointList() {
+    this.#data.map((item) => {
+      this.#renderPoint(item);
     });
+    render(this.#pointList, this.#container);
   }
 }

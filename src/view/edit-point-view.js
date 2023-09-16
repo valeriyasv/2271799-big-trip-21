@@ -135,16 +135,14 @@ function editPointTemplate ({type, destination, offers, price, name}) {
 }
 export default class EditPointView extends AbstractView {
   #data = null;
-  #handleClick = null;
   #handleSubmit = null;
 
-  constructor({ data , onCloseEdit, onSubmitClick}) {
+  constructor({ data , onSubmitClick }) {
     super();
     this.#data = data;
-    this.#handleClick = onCloseEdit;
     this.#handleSubmit = onSubmitClick;
     this.element.querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#clickHandler);
+      .addEventListener('click', this.#submitHandler);
     this.element.querySelector('form')
       .addEventListener('submit', this.#submitHandler);
   }
@@ -153,13 +151,8 @@ export default class EditPointView extends AbstractView {
     return editPointTemplate(this.#data);
   }
 
-  #clickHandler = (evt) => {
-    evt.preventDefault();
-    this.#handleClick();
-  };
-
   #submitHandler = (evt) => {
     evt.preventDefault();
-    this.#handleSubmit();
+    this.#handleSubmit(this.#data);
   };
 }
