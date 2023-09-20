@@ -8,8 +8,9 @@ function pointItem ({type, name, offers, price, isFavorite, dateFrom, dateTo}) {
   const timeFinishHours = dayjs(dateTo).format('hh');
   const timeFinishMinutes = dayjs(dateTo).format('mm');
   const differenceTimeinMinutes = dayjs(dateTo).diff(dateFrom, 'minute');
-  const hours = Math.floor(differenceTimeinMinutes / 60);
+  const hours = Math.floor((differenceTimeinMinutes % (24 * 60)) / 60);
   const minute = differenceTimeinMinutes % 60;
+  const differenceTimeinDays = dayjs(dateTo).diff(dateFrom, 'day') > 0 ? `${dayjs(dateTo).diff(dateFrom, 'day')}D` : '';
 
   return (
     `<li class="trip-events__item">
@@ -25,7 +26,7 @@ function pointItem ({type, name, offers, price, isFavorite, dateFrom, dateTo}) {
           &mdash;
           <time class="event__end-time" datetime="${dateTo}">${timeFinishHours}:${timeFinishMinutes}</time>
         </p>
-        <p class="event__duration">${hours}H ${minute}M</p>
+        <p class="event__duration">${differenceTimeinDays} ${hours}H ${minute}M</p>
       </div>
       <p class="event__price">
         &euro;&nbsp;<span class="event__price-value">${price}</span>

@@ -5,7 +5,7 @@ import PointPresenter from './point-presenter.js';
 import { updateItem } from '../mock/utils.js';
 import { SORT_TYPE } from '../const.js';
 import { getDifferenceInMinutes } from '../mock/utils.js';
-
+import dayjs from 'dayjs';
 export default class ContainerPresenter {
   #container = null;
   #points = null;
@@ -42,12 +42,18 @@ export default class ContainerPresenter {
         this.#data.sort((a, b) => {
           const timeA = getDifferenceInMinutes(a.dateFrom, a.dateTo);
           const timeB = getDifferenceInMinutes(b.dateFrom, b.dateTo);
-
           return timeB - timeA;
         });
         break;
       case SORT_TYPE.PRICE:
         this.#data.sort((a, b) => b.price - a.price);
+        break;
+      case SORT_TYPE.DEFAULT:
+        this.#data.sort((a, b) => {
+          const dateA = dayjs(a.dateFrom).valueOf();
+          const dateB = dayjs(b.dateFrom).valueOf();
+          return dateA - dateB;
+        });
         break;
       default:
         this.#data = [...this.#sourcedBoardPoints];
