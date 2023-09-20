@@ -1,21 +1,32 @@
 import AbstractView from '../framework/view/abstract-view';
+import dayjs from 'dayjs';
 
-function pointItem ({type, name, offers, price, isFavorite}) {
+function pointItem ({type, name, offers, price, isFavorite, dateFrom, dateTo}) {
+  const startDay = dayjs(dateFrom).format('MMM D').toUpperCase();
+  const timeStartHours = dayjs(dateFrom).format('hh');
+  const timeStartMinutes = dayjs(dateFrom).format('mm');
+  const timeFinishHours = dayjs(dateTo).format('hh');
+  const timeFinishMinutes = dayjs(dateTo).format('mm');
+  const differenceTimeinMinutes = dayjs(dateTo).diff(dateFrom, 'minute');
+  const hours = Math.floor((differenceTimeinMinutes % (24 * 60)) / 60);
+  const minute = differenceTimeinMinutes % 60;
+  const differenceTimeinDays = dayjs(dateTo).diff(dateFrom, 'day') > 0 ? `${dayjs(dateTo).diff(dateFrom, 'day')}D` : '';
+
   return (
     `<li class="trip-events__item">
     <div class="event">
-      <time class="event__date" datetime="2019-03-18">MAR 18</time>
+      <time class="event__date" datetime="${dateFrom}">${startDay}</time>
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="${type.img}" alt="Event type icon">
       </div>
       <h3 class="event__title">${type.name} ${name}</h3>
       <div class="event__schedule">
         <p class="event__time">
-          <time class="event__start-time" datetime="2019-03-18T14:30">14:30</time>
+          <time class="event__start-time" datetime="${dateFrom}">${timeStartHours}:${timeStartMinutes}</time>
           &mdash;
-          <time class="event__end-time" datetime="2019-03-18T16:05">16:05</time>
+          <time class="event__end-time" datetime="${dateTo}">${timeFinishHours}:${timeFinishMinutes}</time>
         </p>
-        <p class="event__duration">01H 35M</p>
+        <p class="event__duration">${differenceTimeinDays} ${hours}H ${minute}M</p>
       </div>
       <p class="event__price">
         &euro;&nbsp;<span class="event__price-value">${price}</span>
