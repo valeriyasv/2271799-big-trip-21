@@ -62,10 +62,10 @@ const OFFERS = [
 
 const COUNT_POINT = 5;
 
-const SORT_TYPE = {
+const SortTypes = {
   DEFAULT: 'default',
   PRICE: 'price',
   TIME: 'time',
 };
 
-export { CITIES, DESCRIPTION, TYPES, OFFERS, COUNT_POINT, SORT_TYPE };
+export { CITIES, DESCRIPTION, TYPES, OFFERS, COUNT_POINT, SortTypes };

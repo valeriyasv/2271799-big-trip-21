@@ -3,7 +3,7 @@ import SortView from '../view/sort-view.js';
 import PointListView from '../view/point-list-view.js';
 import PointPresenter from './point-presenter.js';
 import { updateItem } from '../mock/utils.js';
-import { SORT_TYPE } from '../const.js';
+import { SortTypes } from '../const.js';
 import { getDifferenceInMinutes } from '../mock/utils.js';
 import dayjs from 'dayjs';
 export default class ContainerPresenter {
@@ -13,7 +13,7 @@ export default class ContainerPresenter {
   #sortComponent = null;
   #pointPresenters = new Map();
 
-  #currentSortType = SORT_TYPE.DEFAULT;
+  #currentSortType = SortTypes.DEFAULT;
   #sourcedBoardPoints = [];
 
   #data = [];
@@ -38,17 +38,17 @@ export default class ContainerPresenter {
 
   #sortPoints(sortType) {
     switch (sortType) {
-      case SORT_TYPE.TIME:
+      case SortTypes.TIME:
         this.#data.sort((a, b) => {
           const timeA = getDifferenceInMinutes(a.dateFrom, a.dateTo);
           const timeB = getDifferenceInMinutes(b.dateFrom, b.dateTo);
           return timeB - timeA;
         });
         break;
-      case SORT_TYPE.PRICE:
+      case SortTypes.PRICE:
         this.#data.sort((a, b) => b.price - a.price);
         break;
-      case SORT_TYPE.DEFAULT:
+      case SortTypes.DEFAULT:
         this.#data.sort((a, b) => {
           const dateA = dayjs(a.dateFrom).valueOf();
           const dateB = dayjs(b.dateFrom).valueOf();
