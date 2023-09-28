@@ -1,25 +1,28 @@
 import flatpickr from 'flatpickr';
+import _ from 'lodash';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { TYPES } from '../const';
+import { mockOffers } from '../mock/offer.js';
+import { mockDestination } from '../mock/destination.js';
 import dayjs from 'dayjs';
 
 import 'flatpickr/dist/flatpickr.min.css';
-function createTypesTemplate (point) {
+
+function createTypesTemplate(point) {
   return (
-    `<fieldset class="event__type-group">
-    <legend class="visually-hidden">Event type</legend>
+    `
     ${
     TYPES.map((item) => (
       `<div class="event__type-item">
-                <input id="event-type-${item.name.toLowerCase()}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${item.name.toLowerCase()}" ${point.name.toLowerCase() === item.name.toLowerCase() ? 'checked' : ''}>
-                <label class="event__type-label  event__type-label--${item.name.toLowerCase()}" for="event-type-${item.name.toLowerCase()}-1">${item.name}</label>
-              </div>`)).join('')}
-  </fieldset>
+          <input id="event-type-${item.toLowerCase()}-1" class="event__type-input  visually-hidden" type="radio" name="event-type"
+          value="${item.toLowerCase()}" ${point.toLowerCase() === item.toLowerCase() ? 'checked' : ''}>
+          <label class="event__type-label  event__type-label--${item.toLowerCase()}" for="event-type-${item.toLowerCase()}-1">${item}</label>
+        </div>`)).join('')}
     `
   );
 }
 
-function createDestinationTemplate (point) {
+function createTimeTemplate(point) {
   return (
     `
     <div class="event__field-group  event__field-group--time">
@@ -32,7 +35,7 @@ function createDestinationTemplate (point) {
   );
 }
 
-function createPriceTemplate (point) {
+function createPriceTemplate(point) {
   return (
     `
     <div class="event__field-group  event__field-group--price">
@@ -45,43 +48,53 @@ function createPriceTemplate (point) {
   );
 }
 
-function createOffersTemplate (point) {
+// function createCitiesTemplate(point) {
+//   const cityDestinations = point.destination.map((item) => item.name)));
+//   return (`${cityDestinations.map((item) => `<option value="${item}">${item}</option>`).join('')}`);
+// }
+
+function createOffersTemplate(point, typeOffers) {
   return (
     `
     <div class="event__available-offers">
           ${
-    point.offers.map((element) => (
-      `<div class="event__offer-selector">
-              <input class="event__offer-checkbox  visually-hidden" id="event-offer-${element.title}-1" type="checkbox" name="event-offer-${element.title}" ${element.checked ? 'checked' : ''}>
-              <label class="event__offer-label" for="event-offer-${element.title}-1">
+    typeOffers.map((element) => {
+
+      const activeOffers = point.offers.filter((item) => item.title === element.title).length > 0 ? 'checked' : '';
+      return `<div class="event__offer-selector">
+              <input class="event__offer-checkbox  visually-hidden" id="event-offer-${element.id}" type="checkbox" name="event-offer-${element.id}" ${activeOffers} data-offer-id=${element.id}>
+              <label class="event__offer-label" for="event-offer-${element.id}">
                 <span class="event__offer-title">${element.title}</span>
                 &plus;&euro;&nbsp;
                 <span class="event__offer-price">${element.price}</span>
               </label>
-            </div>`
-    )).join('')
+            </div>`;
+    }).join('')
     }
           </div>`
   );
 }
 
-function createDescriptionTemplate (point) {
+function createDescriptionTemplate(point) {
   return (
-    `
-    ${point.destination.map((items) => (
-      `<p class="event__destination-description">${items.pictures.description}</p>`)).join('')}
-                    <div class="event__photos-container">
-                    ${point.destination.map((item) => (
-      `<div class="event__photos-tape">
-      <img class="event__photo" src="${item.pictures.src}" alt="Event photo">`
-    )).join('')
+    `<p class="event__destination-description">${point.destination.description}</p>
+      <div class="event__photos-container">
+      <div class="event__photos-tape">
+  ${
+    point.destination.pictures.map((item) => `
+      <img class="event__photo" src="${item.src}" alt="${item.description}">
+      `).join('')
     }
-                    </div>
-                  </div>`
+    </div>
+      </div>`
   );
 }
-function editPointTemplate ({state}) {
+
+function editPointTemplate({state}) {
   const {data} = state;
+  const { type, name, offers } = data;
+
+  const typeOffers = mockOffers.filter((item) => item.types.includes(_.capitalize(type)));
   return (
     ` <li class="trip-events__item">
         <form class="event event--edit" action="#" method="post">
@@ -89,27 +102,27 @@ function editPointTemplate ({state}) {
             <div class="event__type-wrapper">
               <label class="event__type  event__type-btn" for="event-type-toggle-1">
                 <span class="visually-hidden">Choose event type</span>
-                <img class="event__type-icon" width="17" height="17" src="${state.type.img}" alt="Event type icon">
+                <img class="event__type-icon" width="17" height="17" src="img/icons/${type.toLowerCase()}.png" alt="Event type icon">
               </label>
               <input class="event__type-toggle  visually-hidden" id="event-type-toggle-1" type="checkbox">
 
               <div class="event__type-list">
-                ${createTypesTemplate(data)}
+              <fieldset class="event__type-group">
+    <legend class="visually-hidden">Event type</legend>
+                ${createTypesTemplate(type)}
+                </fieldset>
               </div>
             </div>
             <div class="event__field-group  event__field-group--destination">
               <label class="event__label  event__type-output" for="event-destination-1">
-                ${state.type.name}
+                ${type}
               </label>
-              <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${state.name}" list="destination-list-1">
+              <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
               <datalist id="destination-list-1">
-                <option value="Amsterdam"></option>
-                <option value="Geneva"></option>
-                <option value="Chamonix"></option>
-              </datalist>
-            </div>
+      </datalist>
+    </div>
 
-            ${createDestinationTemplate(data)}
+            ${createTimeTemplate(data)}
 
             ${createPriceTemplate(data)}
 
@@ -120,12 +133,16 @@ function editPointTemplate ({state}) {
             </button>
           </header>
           <section class="event__details">
-            <section class="event__section  event__section--offers">
-              <h3 class="event__section-title  event__section-title--offers">Offers</h3>
+          ${ offers.length !== 0 ?
 
-              ${createOffersTemplate(data)}
+      `<section class="event__section  event__section--offers">
+                <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
-            </section>
+                ${createOffersTemplate(data, typeOffers)}
+
+              </section>`
+      : ''
+    }
             <section class="event__section  event__section--destination">
               <h3 class="event__section-title  event__section-title--destination">Destination</h3>
 
@@ -137,18 +154,19 @@ function editPointTemplate ({state}) {
   );
 }
 export default class EditPointView extends AbstractStatefulView {
-  #data = null;
+  // #data = null;
   #handleSubmit = null;
+  #clickResetHandler = null;
   #pointDestinations = null;
   #datepickerFrom = null;
   #datepickerTo = null;
 
-  constructor({ data, pointDestinations, onSubmitClick }) {
+  constructor({ data, pointDestinations, onSubmitClick, clickResetHandler }) {
     super();
     this._state = data;
     this.#pointDestinations = pointDestinations;
     this.#handleSubmit = onSubmitClick;
-
+    this.#clickResetHandler = clickResetHandler;
     this._setState(EditPointView.parsePointToState({data}));
 
     this._restoreHandlers();
@@ -178,7 +196,7 @@ export default class EditPointView extends AbstractStatefulView {
 
   _restoreHandlers = () => {
     this.element.querySelector('.event__rollup-btn')
-      .addEventListener('click', this.#submitHandler);
+      .addEventListener('click', this.#clickResetHandler);
 
     this.element.querySelector('form')
       .addEventListener('submit', this.#submitHandler);
@@ -208,16 +226,14 @@ export default class EditPointView extends AbstractStatefulView {
       data: {
         ...this._state.data,
         type: evt.target.value,
-        offers: []
-      }
+        offer: [],
+      },
     });
   };
 
   #destinationChangeHandler = (evt) => {
-    const selectedDestination = this.#pointDestinations
-      .find((pointDestination) => pointDestination.name === evt.target.value);
-
-    const selectedDestinationId = (selectedDestination) ? selectedDestination.id : null;
+    const selectedDestination = mockDestination.find((pointDestination) => pointDestination.name === evt.target.value);
+    const selectedDestinationId = (selectedDestination) ? selectedDestination.id : this._state.data.destination;
 
     this.updateElement({
       data: {
@@ -229,11 +245,10 @@ export default class EditPointView extends AbstractStatefulView {
 
   #offerChangeHandler = () => {
     const checkedBoxes = Array.from(this.element.querySelectorAll('.event__offer-checkbox:checked'));
-
     this._setState({
       data: {
         ...this._state.data,
-        offers: checkedBoxes.map((element) => element.dataset.offerId)
+        offer: checkedBoxes.map((element) => element.dataset.offerId)
       }
     });
   };
@@ -242,7 +257,8 @@ export default class EditPointView extends AbstractStatefulView {
     this._setState({
       data: {
         ...this._state.data,
-        price: evt.target.valueAsNumber
+        price: evt.target.value,
+        offers: []
       }
     });
   };

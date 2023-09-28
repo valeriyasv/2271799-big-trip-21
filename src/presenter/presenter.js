@@ -1,6 +1,7 @@
 import {render} from '../framework/render.js';
 import SortView from '../view/sort-view.js';
 import PointListView from '../view/point-list-view.js';
+import EmptyListView from '../view/empty-list-points.js';
 import PointPresenter from './point-presenter.js';
 import { updateItem } from '../mock/utils.js';
 import { SortTypes } from '../const.js';
@@ -28,6 +29,7 @@ export default class ContainerPresenter {
     this.#sourcedBoardPoints = [...this.#points.points];
     this.#renderSort();
     this.#renderPointList();
+    this.#renderEmpty();
   }
 
   #handlePointChange = (updatedPoint) => {
@@ -98,6 +100,12 @@ export default class ContainerPresenter {
     this.#pointPresenters.forEach((presenter) => presenter.destroy());
     this.#pointPresenters.clear();
   }
+
+  #renderEmpty = () => {
+    if (this.#points.length === 0) {
+      render(new EmptyListView(), this.#container);
+    }
+  };
 
   #renderPointList() {
     this.#data.map((item) => {

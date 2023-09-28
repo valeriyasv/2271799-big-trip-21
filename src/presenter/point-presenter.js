@@ -1,6 +1,7 @@
 import {remove, render, replace } from '../framework/render.js';
 import EditPointView from '../view/edit-point-view.js';
 import PointView from '../view/point-view.js';
+import { mockDestination } from '../mock/destination.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -36,7 +37,9 @@ export default class PointPresenter {
     });
     this.#editPointComponent = new EditPointView({
       data: this.#point,
+      pointDestinations: mockDestination,
       onSubmitClick: this.#handleFormSubmit,
+      clickResetHandler: this.#resetClickHandler
     });
 
     if (prevPointComponent === null || prevEditComponent === null) {

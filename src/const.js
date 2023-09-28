@@ -27,37 +27,15 @@ const DESCRIPTION = [
 ];
 
 const TYPES = [
-  {
-    name: 'Taxi',
-    img: 'img/icons/taxi.png'
-  },
-  {
-    name: 'Bus',
-    img: 'img/icons/bus.png'
-  },
-  {
-    name: 'Train',
-    img: 'img/icons/train.png'
-  },
-  {
-    name: 'Ship',
-    img: 'img/icons/ship.png'
-  },
-  {
-    name: 'Drive',
-    img: 'img/icons/drive.png'
-  }
-];
-
-const OFFERS = [
-  'Order Uber',
-  'Add luggage',
-  'Switch to comfort',
-  'Rent a car',
-  'Add breakfast',
-  'Book tickets',
-  'Lunch in city',
-  'Upgrade to a business class'
+  'Taxi',
+  'Bus',
+  'Train',
+  'Ship',
+  'Drive',
+  'Check-in',
+  'Sightseeing',
+  'Restaurant',
+  'Flight'
 ];
 
 const COUNT_POINT = 5;
@@ -68,4 +46,4 @@ const SortTypes = {
   TIME: 'time',
 };
 
-export { CITIES, DESCRIPTION, TYPES, OFFERS, COUNT_POINT, SortTypes };
+export { CITIES, DESCRIPTION, TYPES, COUNT_POINT, SortTypes };
