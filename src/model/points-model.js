@@ -1,5 +1,7 @@
 import { mockPoint } from '../mock/point';
-export default class PointsModel {
+import Observable from '../framework/observable';
+
+export default class PointsModel extends Observable {
   #points = mockPoint;
 
   get points() {

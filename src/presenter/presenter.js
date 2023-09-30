@@ -115,4 +115,8 @@ export default class ContainerPresenter {
     });
     render(this.#pointList, this.#container);
   }
+
+  // get points() {
+  //   ///
+  // }
 }
