@@ -2,6 +2,7 @@ import { CITIES } from '../const';
 import { getRandomElement, getRandomPositiveInteger } from './utils';
 import { mockDestination } from './destination';
 import { mockOffers } from './offer';
+
 const mockPoint = [
   {
     id: crypto.randomUUID(),
@@ -12,7 +13,7 @@ const mockPoint = [
     destination: getRandomElement(mockDestination),
     isFavorite: true,
     type: 'Taxi',
-    offers: Array.from({ length: getRandomPositiveInteger(0, mockOffers.filter((item) => item.types.includes('Taxi')).length) }, () => getRandomElement(mockOffers.filter((item) => item.types.includes('Taxi')))),
+    offers: Array.from({ length: getRandomPositiveInteger(0, mockOffers.find((item) => item.types === 'Taxi').offers.length) }, () => getRandomElement(mockOffers.find((item) => item.types === 'Taxi').offers)),
   },
   {
     id: crypto.randomUUID(),
@@ -23,7 +24,7 @@ const mockPoint = [
     destination: getRandomElement(mockDestination),
     isFavorite: false,
     type: 'Bus',
-    offers: Array.from({ length: getRandomPositiveInteger(0, mockOffers.filter((item) => item.types.includes('Bus')).length) }, () => getRandomElement(mockOffers.filter((item) => item.types.includes('Bus')))),
+    offers: Array.from({ length: getRandomPositiveInteger(0, mockOffers.find((item) => item.types === 'Bus').offers.length) }, () => getRandomElement(mockOffers.find((item) => item.types === 'Bus').offers)),
   },
   {
     id: crypto.randomUUID(),
@@ -34,7 +35,7 @@ const mockPoint = [
     destination: getRandomElement(mockDestination),
     isFavorite: true,
     type: 'Train',
-    offers: Array.from({ length: getRandomPositiveInteger(0, mockOffers.filter((item) => item.types.includes('Train')).length) }, () => getRandomElement(mockOffers.filter((item) => item.types.includes('Train')))),
+    offers: Array.from({ length: getRandomPositiveInteger(0, mockOffers.find((item) => item.types === 'Train').offers.length) }, () => getRandomElement(mockOffers.find((item) => item.types === 'Train').offers)),
   },
   {
     id: crypto.randomUUID(),
@@ -45,7 +46,7 @@ const mockPoint = [
     destination: getRandomElement(mockDestination),
     isFavorite: true,
     type: 'Ship',
-    offers: Array.from({ length: getRandomPositiveInteger(0, mockOffers.filter((item) => item.types.includes('Ship')).length) }, () => getRandomElement(mockOffers.filter((item) => item.types.includes('Ship')))),
+    offers: Array.from({ length: getRandomPositiveInteger(0, mockOffers.find((item) => item.types === 'Ship').offers.length) }, () => getRandomElement(mockOffers.find((item) => item.types === 'Ship').offers)),
   },
   {
     id: crypto.randomUUID(),
@@ -56,7 +57,7 @@ const mockPoint = [
     destination: getRandomElement(mockDestination),
     isFavorite: false,
     type: 'Drive',
-    offers: Array.from({ length: getRandomPositiveInteger(0, mockOffers.filter((item) => item.types.includes('Drive')).length) }, () => getRandomElement(mockOffers.filter((item) => item.types.includes('Drive')))),
+    offers: Array.from({ length: getRandomPositiveInteger(0, mockOffers.find((item) => item.types === 'Drive').offers.length) }, () => getRandomElement(mockOffers.find((item) => item.types === 'Drive').offers)),
   },
   {
     id: crypto.randomUUID(),
@@ -67,7 +68,7 @@ const mockPoint = [
     destination: getRandomElement(mockDestination),
     isFavorite: true,
     type: 'Check-in',
-    offers: Array.from({ length: getRandomPositiveInteger(0, mockOffers.filter((item) => item.types.includes('Check-in')).length) }, () => getRandomElement(mockOffers.filter((item) => item.types.includes('Check-in')))),
+    offers: Array.from({ length: getRandomPositiveInteger(0, mockOffers.find((item) => item.types === 'Check-in').offers.length) }, () => getRandomElement(mockOffers.find((item) => item.types === 'Check-in').offers)),
   },
   {
     id: crypto.randomUUID(),
@@ -78,7 +79,7 @@ const mockPoint = [
     destination: getRandomElement(mockDestination),
     isFavorite: true,
     type: 'Sightseeing',
-    offers: Array.from({ length: getRandomPositiveInteger(0, mockOffers.filter((item) => item.types.includes('Sightseeing')).length) }, () => getRandomElement(mockOffers.filter((item) => item.types.includes('Sightseeing')))),
+    offers: Array.from({ length: getRandomPositiveInteger(0, mockOffers.find((item) => item.types === 'Sightseeing').offers.length) }, () => getRandomElement(mockOffers.find((item) => item.types === 'Sightseeing').offers)),
   },
   {
     id: crypto.randomUUID(),
@@ -89,7 +90,7 @@ const mockPoint = [
     destination: getRandomElement(mockDestination),
     isFavorite: true,
     type: 'Restaurant',
-    offers: Array.from({ length: getRandomPositiveInteger(0, mockOffers.filter((item) => item.types.includes('Restaurant')).length) }, () => getRandomElement(mockOffers.filter((item) => item.types.includes('Restaurant')))),
+    offers: Array.from({ length: getRandomPositiveInteger(0, mockOffers.find((item) => item.types === 'Restaurant').offers.length) }, () => getRandomElement(mockOffers.find((item) => item.types === 'Restaurant').offers)),
   },
   {
     id: crypto.randomUUID(),
@@ -100,7 +101,7 @@ const mockPoint = [
     destination: getRandomElement(mockDestination),
     isFavorite: true,
     type: 'Flight',
-    offers: Array.from({ length: getRandomPositiveInteger(0, mockOffers.filter((item) => item.types.includes('Flight')).length) }, () => getRandomElement(mockOffers.filter((item) => item.types.includes('Flight')))),
+    offers: Array.from({ length: getRandomPositiveInteger(0, mockOffers.find((item) => item.types === 'Flight').offers.length) }, () => getRandomElement(mockOffers.find((item) => item.types === 'Flight').offers)),
   },
 ];
 

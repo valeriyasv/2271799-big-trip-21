@@ -3,7 +3,6 @@ import _ from 'lodash';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import { TYPES } from '../const';
 import { mockOffers } from '../mock/offer.js';
-import { mockDestination } from '../mock/destination.js';
 import dayjs from 'dayjs';
 
 import 'flatpickr/dist/flatpickr.min.css';
@@ -48,29 +47,29 @@ function createPriceTemplate(point) {
   );
 }
 
-// function createCitiesTemplate(point) {
-//   const cityDestinations = point.destination.map((item) => item.name)));
-//   return (`${cityDestinations.map((item) => `<option value="${item}">${item}</option>`).join('')}`);
-// }
+function createCitiesTemplate(destination) {
+  const cityDestinations = destination.name;
+  return (`<option value="${cityDestinations}">${cityDestinations}</option>`);
+}
 
 function createOffersTemplate(point, typeOffers) {
   return (
     `
     <div class="event__available-offers">
-          ${
-    typeOffers.map((element) => {
+    ${typeOffers[0].offers
+      .map((element) => {
+        const activeOffers = point.offers.filter((item) => item.title === element.title).length > 0 ? 'checked' : '';
 
-      const activeOffers = point.offers.filter((item) => item.title === element.title).length > 0 ? 'checked' : '';
-      return `<div class="event__offer-selector">
-              <input class="event__offer-checkbox  visually-hidden" id="event-offer-${element.id}" type="checkbox" name="event-offer-${element.id}" ${activeOffers} data-offer-id=${element.id}>
-              <label class="event__offer-label" for="event-offer-${element.id}">
-                <span class="event__offer-title">${element.title}</span>
-                &plus;&euro;&nbsp;
-                <span class="event__offer-price">${element.price}</span>
-              </label>
-            </div>`;
-    }).join('')
-    }
+        return `<div class="event__offer-selector">
+                  <input class="event__offer-checkbox  visually-hidden" id="event-offer-${element.id}" type="checkbox" name="event-offer-${element.id}" ${activeOffers} data-offer-id=${element.id}>
+                  <label class="event__offer-label" for="event-offer-${element.id}">
+                    <span class="event__offer-title">${element.title}</span>
+                    &plus;&euro;&nbsp;
+                    <span class="event__offer-price">${element.price}</span>
+                  </label>
+                </div>`;
+      })
+      .join('')}
           </div>`
   );
 }
@@ -92,9 +91,10 @@ function createDescriptionTemplate(point) {
 
 function editPointTemplate({state}) {
   const {data} = state;
-  const { type, name, offers } = data;
+  const {type, name, offers} = data;
 
-  const typeOffers = mockOffers.filter((item) => item.types.includes(_.capitalize(type)));
+  const typeOffers = mockOffers.filter((item) => item.types === _.capitalize(type));
+
   return (
     ` <li class="trip-events__item">
         <form class="event event--edit" action="#" method="post">
@@ -108,9 +108,9 @@ function editPointTemplate({state}) {
 
               <div class="event__type-list">
               <fieldset class="event__type-group">
-    <legend class="visually-hidden">Event type</legend>
+              <legend class="visually-hidden">Event type</legend>
                 ${createTypesTemplate(type)}
-                </fieldset>
+              </fieldset>
               </div>
             </div>
             <div class="event__field-group  event__field-group--destination">
@@ -119,12 +119,13 @@ function editPointTemplate({state}) {
               </label>
               <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
               <datalist id="destination-list-1">
-      </datalist>
-    </div>
+                ${createCitiesTemplate(name)}
+              </datalist>
+              </div>
 
-            ${createTimeTemplate(data)}
+              ${createTimeTemplate(data)}
 
-            ${createPriceTemplate(data)}
+              ${createPriceTemplate(data)}
 
             <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
             <button class="event__reset-btn" type="reset">Delete</button>
@@ -232,8 +233,8 @@ export default class EditPointView extends AbstractStatefulView {
   };
 
   #destinationChangeHandler = (evt) => {
-    const selectedDestination = mockDestination.find((pointDestination) => pointDestination.name === evt.target.value);
-    const selectedDestinationId = (selectedDestination) ? selectedDestination.id : this._state.data.destination;
+    const selectedDestination = this.#pointDestinations.find((pointDestination) => pointDestination.name === evt.target.value);
+    const selectedDestinationId = (selectedDestination) ? selectedDestination.name : this._state.data.destination;
 
     this.updateElement({
       data: {
@@ -258,7 +259,7 @@ export default class EditPointView extends AbstractStatefulView {
       data: {
         ...this._state.data,
         price: evt.target.value,
-        offers: []
+        offer: []
       }
     });
   };

@@ -10,6 +10,7 @@ import dayjs from 'dayjs';
 export default class ContainerPresenter {
   #container = null;
   #points = null;
+  #destination = null;
   #pointList = new PointListView();
   #sortComponent = null;
   #pointPresenters = new Map();
@@ -19,9 +20,10 @@ export default class ContainerPresenter {
 
   #data = [];
 
-  constructor({container, points}) {
+  constructor({container, points, destination}) {
     this.#container = container;
     this.#points = points;
+    this.#destination = destination;
   }
 
   init() {
