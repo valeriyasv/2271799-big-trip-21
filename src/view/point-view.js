@@ -11,15 +11,15 @@ function pointItem ({type, name, offers, price, isFavorite, dateFrom, dateTo}) {
   const hours = Math.floor((differenceTimeinMinutes % (24 * 60)) / 60);
   const minute = differenceTimeinMinutes % 60;
   const differenceTimeinDays = dayjs(dateTo).diff(dateFrom, 'day') > 0 ? `${dayjs(dateTo).diff(dateFrom, 'day')}D` : '';
-
+  const srcType = type.toLowerCase();
   return (
     `<li class="trip-events__item">
     <div class="event">
       <time class="event__date" datetime="${dateFrom}">${startDay}</time>
       <div class="event__type">
-        <img class="event__type-icon" width="42" height="42" src="${type.img}" alt="Event type icon">
+        <img class="event__type-icon" width="42" height="42" src="img/icons/${srcType}.png" alt="Event type icon">
       </div>
-      <h3 class="event__title">${type.name} ${name}</h3>
+      <h3 class="event__title">${type} ${name}</h3>
       <div class="event__schedule">
         <p class="event__time">
           <time class="event__start-time" datetime="${dateFrom}">${timeStartHours}:${timeStartMinutes}</time>

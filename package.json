@@ -33,7 +33,8 @@
     "node": "18"
   },
   "dependencies": {
-    "dayjs": "^1.11.9",
-    "flatpickr": "4.6.13"
+    "dayjs": "1.11.7",
+    "flatpickr": "4.6.13",
+    "lodash": "^4.17.21"
   }
 }
