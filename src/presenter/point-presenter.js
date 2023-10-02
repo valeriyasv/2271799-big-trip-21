@@ -2,6 +2,7 @@ import {remove, render, replace } from '../framework/render.js';
 import EditPointView from '../view/edit-point-view.js';
 import PointView from '../view/point-view.js';
 import { mockDestination } from '../mock/destination.js';
+import { UserAction, UpdateType } from '../const.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -39,7 +40,8 @@ export default class PointPresenter {
       data: this.#point,
       pointDestinations: mockDestination,
       onSubmitClick: this.#handleFormSubmit,
-      clickResetHandler: this.#resetClickHandler
+      clickResetHandler: this.#resetClickHandler,
+      onDeleteClick: this.#handleDeleteClick
     });
 
     if (prevPointComponent === null || prevEditComponent === null) {
@@ -90,6 +92,14 @@ export default class PointPresenter {
 
   #handleFavoriteClick = () => {
     this.#handleDataChange({...this.#point, isFavorite: !this.#point.isFavorite});
+  };
+
+  #handleDeleteClick = (point) => {
+    this.#handleDataChange(
+      UserAction.DELETE_POINT,
+      UpdateType.MINOR,
+      point
+    );
   };
 
   #resetClickHandler = () => {

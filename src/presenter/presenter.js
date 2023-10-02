@@ -9,7 +9,7 @@ import { filterType } from '../mock/utils.js';
 import { UpdateType } from '../const.js';
 import { SortTypes } from '../const.js';
 import { getDifferenceInMinutes } from '../mock/utils.js';
-import { updateItem } from '../mock/utils.js';
+// import { updateItem } from '../mock/utils.js';
 import { UserAction } from '../const.js';
 import dayjs from 'dayjs';
 export default class ContainerPresenter {
@@ -75,11 +75,11 @@ export default class ContainerPresenter {
     this.#renderEmpty();
   }
 
-  #handlePointChange = (updatedPoint) => {
-    this.#data = updateItem(this.#data, updatedPoint);
-    this.#sourcedBoardPoints = updateItem(this.#sourcedBoardPoints, updatedPoint);
-    this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
-  };
+  // #handlePointChange = (updatedPoint) => {
+  //   this.#data = updateItem(this.#data, updatedPoint);
+  //   this.#sourcedBoardPoints = updateItem(this.#sourcedBoardPoints, updatedPoint);
+  //   this.#pointPresenters.get(updatedPoint.id).init(updatedPoint);
+  // };
 
   #sortPoints(sortType) {
     switch (sortType) {
@@ -131,7 +131,7 @@ export default class ContainerPresenter {
   #renderPoint (dataPoint) {
     const pointPresenter = new PointPresenter ({
       pointListContainer: this.#pointList.element,
-      onDataChange: this.#handlePointChange,
+      onDataChange: this.#handleViewAction,
       onModeChange: this.#handleModeChange,
     });
 
@@ -162,13 +162,13 @@ export default class ContainerPresenter {
 
   #handleViewAction = (actionType, updateType, update) => {
     switch (actionType) {
-      case UserAction.UPDATE_TASK:
+      case UserAction.UPDATE_POINT:
         this.#points.updatePoint(updateType, update);
         break;
-      case UserAction.ADD_TASK:
+      case UserAction.ADD_POINT:
         this.#points.addPoint(updateType, update);
         break;
-      case UserAction.DELETE_TASK:
+      case UserAction.DELETE_POINT:
         this.#points.deletePoint(updateType, update);
         break;
     }
