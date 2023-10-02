@@ -7,6 +7,17 @@ import dayjs from 'dayjs';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
+const BLANK_POINT = {
+  price: null,
+  dateFrom: null,
+  dateTo: null,
+  name: '',
+  destination: [],
+  isFavorite: true,
+  type: 'Restaurant',
+  offers: []
+};
+
 function createTypesTemplate(point) {
   return (
     `
@@ -79,10 +90,11 @@ function createDescriptionTemplate(point) {
     `<p class="event__destination-description">${point.destination.description}</p>
       <div class="event__photos-container">
       <div class="event__photos-tape">
-  ${
-    point.destination.pictures.map((item) => `
+  ${ point.destination.pictures ?
+      point.destination.pictures.map((item) => `
       <img class="event__photo" src="${item.src}" alt="${item.description}">
       `).join('')
+      : ''
     }
     </div>
       </div>`
@@ -162,7 +174,7 @@ export default class EditPointView extends AbstractStatefulView {
   #datepickerFrom = null;
   #datepickerTo = null;
 
-  constructor({ data, pointDestinations, onSubmitClick, clickResetHandler }) {
+  constructor({ data = BLANK_POINT, pointDestinations, onSubmitClick, clickResetHandler }) {
     super();
     this._state = data;
     this.#pointDestinations = pointDestinations;

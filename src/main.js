@@ -18,14 +18,30 @@ const filterPresenter = new FilterPresenter({
   pointsModel: modelPoints,
 });
 
+
 const presenter = new ContainerPresenter({
   container: tripEventsElement,
   points: modelPoints,
-  filterModel
+  filterModel,
+  onNewPointDestroy: handleNewPointFormClose
 });
 
+
+const newPointButtonComponet = new NewEventButton({
+  onClick: handleNewPointButtonClick
+});
+
+function handleNewPointButtonClick() {
+  presenter.createPoint();
+  newPointButtonComponet.element.disabled = true;
+}
+
+function handleNewPointFormClose() {
+  newPointButtonComponet.element.disabled = false;
+}
+
 render(new InfoView(), mainElement);
-render(new NewEventButton(), mainElement);
+render(newPointButtonComponet, mainElement);
 
 filterPresenter.init();
 presenter.init();

@@ -47,6 +47,12 @@ const FilterTypes = {
   PAST: 'past',
 };
 
+const UserAction = {
+  UPDATE_TASK: 'UPDATE_TASK',
+  ADD_TASK: 'ADD_TASK',
+  DELETE_TASK: 'DELETE_TASK',
+};
+
 const UpdateType = {
   PATCH: 'PATCH',
   MINOR: 'MINOR',
@@ -59,4 +65,4 @@ const SortTypes = {
   TIME: 'time',
 };
 
-export { CITIES, DESCRIPTION, TYPES, COUNT_POINT, SortTypes, FilterTypes, UpdateType };
+export { CITIES, DESCRIPTION, TYPES, COUNT_POINT, SortTypes, FilterTypes, UpdateType, UserAction };

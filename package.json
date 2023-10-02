@@ -35,6 +35,7 @@
   "dependencies": {
     "dayjs": "1.11.7",
     "flatpickr": "4.6.13",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "nanoid": "^5.0.1"
   }
 }

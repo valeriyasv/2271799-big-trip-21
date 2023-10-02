@@ -3,12 +3,14 @@ import SortView from '../view/sort-view.js';
 import PointListView from '../view/point-list-view.js';
 import EmptyListView from '../view/empty-list-points.js';
 import PointPresenter from './point-presenter.js';
+import NewPointPresenter from './new-point-presenter.js';
 import { FilterTypes } from '../const.js';
 import { filterType } from '../mock/utils.js';
 import { UpdateType } from '../const.js';
 import { SortTypes } from '../const.js';
 import { getDifferenceInMinutes } from '../mock/utils.js';
 import { updateItem } from '../mock/utils.js';
+import { UserAction } from '../const.js';
 import dayjs from 'dayjs';
 export default class ContainerPresenter {
   #container = null;
@@ -18,17 +20,23 @@ export default class ContainerPresenter {
   #pointList = new PointListView();
   #sortComponent = null;
   #pointPresenters = new Map();
+  #newPointPresenter = null;
   #currentSortType = SortTypes.DEFAULT;
   #sourcedBoardPoints = [];
   #filterType = FilterTypes.EVERYTHING;
 
   #data = [];
 
-  constructor({container, points, filterModel}) {
+  constructor({container, points, filterModel, onNewPointDestroy}) {
     this.#container = container;
     this.#points = points;
     this.#filterModel = filterModel;
 
+    this.#newPointPresenter = new NewPointPresenter({
+      pointListContainer: this.#pointList.element,
+      onDataChange: this.#handleViewAction,
+      onDestroy: onNewPointDestroy
+    });
     this.#points.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
   }
@@ -152,11 +160,31 @@ export default class ContainerPresenter {
     }
   };
 
+  #handleViewAction = (actionType, updateType, update) => {
+    switch (actionType) {
+      case UserAction.UPDATE_TASK:
+        this.#points.updatePoint(updateType, update);
+        break;
+      case UserAction.ADD_TASK:
+        this.#points.addPoint(updateType, update);
+        break;
+      case UserAction.DELETE_TASK:
+        this.#points.deletePoint(updateType, update);
+        break;
+    }
+  };
+
   #renderEmpty = () => {
     if (this.#points.length === 0) {
       render(new EmptyListView(), this.#container);
     }
   };
+
+  createPoint() {
+    this.#currentSortType = SortTypes.DEFAULT;
+    this.#filterModel.set(UpdateType.MAJOR, FilterTypes.EVERYTHING);
+    this.#newPointPresenter.init();
+  }
 
   #renderPointList() {
     this.points.map((item) => {
