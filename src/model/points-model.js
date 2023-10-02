@@ -7,4 +7,16 @@ export default class PointsModel extends Observable {
   get points() {
     return this.#points;
   }
+
+  updatePoint(updatedPoint) {
+    return updatedPoint;
+  }
+
+  addPoint(data) {
+    return {...data, id: crypto.randomUUID()};
+  }
+
+  deletePoint() {
+
+  }
 }

@@ -84,8 +84,8 @@ const mockPoint = [
   {
     id: crypto.randomUUID(),
     price: getRandomPositiveInteger(),
-    dateFrom: new Date('2023-09-27T19:30'),
-    dateTo: new Date('2023-09-28T21:30'),
+    dateFrom: new Date('2023-10-01T19:30'),
+    dateTo: new Date('2023-10-28T21:30'),
     name: getRandomElement(CITIES),
     destination: getRandomElement(mockDestination),
     isFavorite: true,
@@ -95,8 +95,8 @@ const mockPoint = [
   {
     id: crypto.randomUUID(),
     price: getRandomPositiveInteger(),
-    dateFrom: new Date('2023-09-27T19:30'),
-    dateTo: new Date('2023-09-28T21:30'),
+    dateFrom: new Date('2023-10-05T19:30'),
+    dateTo: new Date('2023-10-11T21:30'),
     name: getRandomElement(CITIES),
     destination: getRandomElement(mockDestination),
     isFavorite: true,

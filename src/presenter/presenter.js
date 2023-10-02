@@ -3,27 +3,60 @@ import SortView from '../view/sort-view.js';
 import PointListView from '../view/point-list-view.js';
 import EmptyListView from '../view/empty-list-points.js';
 import PointPresenter from './point-presenter.js';
-import { updateItem } from '../mock/utils.js';
+import { FilterTypes } from '../const.js';
+import { filterType } from '../mock/utils.js';
+import { UpdateType } from '../const.js';
 import { SortTypes } from '../const.js';
 import { getDifferenceInMinutes } from '../mock/utils.js';
+import { updateItem } from '../mock/utils.js';
 import dayjs from 'dayjs';
 export default class ContainerPresenter {
   #container = null;
   #points = null;
-  #destination = null;
+  #filterModel = null;
+
   #pointList = new PointListView();
   #sortComponent = null;
   #pointPresenters = new Map();
-
   #currentSortType = SortTypes.DEFAULT;
   #sourcedBoardPoints = [];
+  #filterType = FilterTypes.EVERYTHING;
 
   #data = [];
 
-  constructor({container, points, destination}) {
+  constructor({container, points, filterModel}) {
     this.#container = container;
     this.#points = points;
-    this.#destination = destination;
+    this.#filterModel = filterModel;
+
+    this.#points.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
+  }
+
+  get points() {
+    this.#filterType = this.#filterModel.filter;
+    const points = this.#points.points;
+    const filterPoints = filterType[this.#filterType](points);
+
+    switch (this.#currentSortType) {
+      case SortTypes.PRICE:
+        filterPoints.sort((a, b) => b.price - a.price);
+        break;
+      case SortTypes.TIME:
+        filterPoints.sort((a, b) => {
+          const timeA = getDifferenceInMinutes(a.dateFrom, a.dateTo);
+          const timeB = getDifferenceInMinutes(b.dateFrom, b.dateTo);
+          return timeB - timeA;
+        });
+        break;
+      case SortTypes.DEFAULT:
+        filterPoints.sort((a, b) => {
+          const dateA = dayjs(a.dateFrom).valueOf();
+          const dateB = dayjs(b.dateFrom).valueOf();
+          return dateA - dateB;
+        });
+    }
+    return filterPoints;
   }
 
   init() {
@@ -103,6 +136,22 @@ export default class ContainerPresenter {
     this.#pointPresenters.clear();
   }
 
+  #handleModelEvent = (updateType, data) => {
+    switch (updateType) {
+      case UpdateType.PATCH:
+        this.#pointPresenters?.get(data.id)?.init(data);
+        break;
+      case UpdateType.MINOR:
+        this.#clearPointList();
+        this.#renderPointList();
+        break;
+      case UpdateType.MAJOR:
+        this.#clearPointList();
+        this.#renderPointList();
+        break;
+    }
+  };
+
   #renderEmpty = () => {
     if (this.#points.length === 0) {
       render(new EmptyListView(), this.#container);
@@ -110,13 +159,9 @@ export default class ContainerPresenter {
   };
 
   #renderPointList() {
-    this.#data.map((item) => {
+    this.points.map((item) => {
       this.#renderPoint(item);
     });
     render(this.#pointList, this.#container);
   }
-
-  // get points() {
-  //   ///
-  // }
 }

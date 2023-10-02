@@ -40,10 +40,23 @@ const TYPES = [
 
 const COUNT_POINT = 5;
 
+const FilterTypes = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PRESENT: 'present',
+  PAST: 'past',
+};
+
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+};
+
 const SortTypes = {
   DEFAULT: 'default',
   PRICE: 'price',
   TIME: 'time',
 };
 
-export { CITIES, DESCRIPTION, TYPES, COUNT_POINT, SortTypes };
+export { CITIES, DESCRIPTION, TYPES, COUNT_POINT, SortTypes, FilterTypes, UpdateType };
