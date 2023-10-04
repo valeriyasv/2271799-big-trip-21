@@ -34,7 +34,6 @@ export default class PointPresenter {
     this.#point = point;
     const prevPointComponent = this.#pointComponent;
     const prevEditComponent = this.#editPointComponent;
-
     this.#pointComponent = new PointView({
       data: this.#point,
       onEditClick: this.#handleEditClick,

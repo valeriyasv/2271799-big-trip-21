@@ -83,5 +83,21 @@ const adaptToClient = (point) => {
   return adaptedPoint;
 };
 
+const adaptToServer = (point) => {
+  const adaptedPoint = {
+    ...point,
+    ['date_from']: new Date(point.dateFrom).toISOString(),
+    ['date_to']: new Date(point.dateTo).toISOString(),
+    ['base_price']: point.basePrice,
+    ['is_favorite']: point.isFavorite,
+  };
 
-export { CITIES, DESCRIPTION, TYPES, COUNT_POINT, SortTypes, FilterTypes, UpdateType, UserAction, adaptToClient };
+  delete adaptedPoint.dateFrom;
+  delete adaptedPoint.dateTo;
+  delete adaptedPoint.basePrice;
+  delete adaptedPoint.isFavorite;
+
+  return adaptedPoint;
+};
+
+export { CITIES, DESCRIPTION, TYPES, COUNT_POINT, SortTypes, FilterTypes, UpdateType, UserAction, adaptToClient, adaptToServer };

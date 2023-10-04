@@ -59,6 +59,7 @@ export default class ContainerPresenter {
     const filtersTypes = this.#filterModel.filter;
     const points = this.#points.points;
     const filteredPoints = filterType[filtersTypes](points);
+
     switch (this.#currentSortType) {
       case SortTypes.PRICE:
         filteredPoints.sort((a, b) => b.price - a.price);
@@ -82,7 +83,6 @@ export default class ContainerPresenter {
 
   init() {
     this.#renderSort();
-    // setTimeout(() => this.#renderPointList(), 1000)
     this.#renderPointList();
     this.#renderEmpty();
   }
@@ -154,7 +154,7 @@ export default class ContainerPresenter {
   #handleModelEvent = (updateType, data) => {
     switch (updateType) {
       case UpdateType.PATCH:
-        this.#pointPresenters.get(data.id).init(data);
+        this.#pointPresenters?.get(data.id)?.init(data);
         break;
       case UpdateType.MINOR:
         this.#clearPointList();
@@ -167,7 +167,7 @@ export default class ContainerPresenter {
       case UpdateType.INIT:
         this.#isLoading = false;
         remove(this.#loadingComponent);
-        this.#renderPointList();
+        this.#renderPoints();
         break;
     }
   };
@@ -207,11 +207,6 @@ export default class ContainerPresenter {
   }
 
   #renderPoints() {
-    // if (this.#points.points === 0) {
-    //   console.log('yy')
-    //   return;
-    // }
-
     this.points.forEach((point) => {
       this.#renderPoint(point);
     });
@@ -243,7 +238,6 @@ export default class ContainerPresenter {
   }
 
   #renderPointList() {
-
     this.#renderPoints();
     this.#renderPointsContainer();
   }
