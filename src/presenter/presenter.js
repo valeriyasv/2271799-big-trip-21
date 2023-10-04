@@ -30,7 +30,7 @@ export default class ContainerPresenter {
   #sourcedBoardPoints = this.#points;
   #filterType = FilterTypes.EVERYTHING;
 
-  #isLoading = true;
+  // #isLoading = true;
   #uiBlocker = new UiBlocker({
     lowerLimit: TimeLimit.LOWER_LIMIT,
     upperLimit: TimeLimit.UPPER_LIMIT
