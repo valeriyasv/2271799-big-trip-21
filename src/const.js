@@ -40,10 +40,64 @@ const TYPES = [
 
 const COUNT_POINT = 5;
 
+const FilterTypes = {
+  EVERYTHING: 'everything',
+  FUTURE: 'future',
+  PRESENT: 'present',
+  PAST: 'past',
+};
+
+const UserAction = {
+  UPDATE_POINT: 'UPDATE_POINT',
+  ADD_POINT: 'ADD_POINT',
+  DELETE_POINT: 'DELETE_POINT',
+};
+
+const UpdateType = {
+  PATCH: 'PATCH',
+  MINOR: 'MINOR',
+  MAJOR: 'MAJOR',
+  INIT: 'INIT'
+};
+
 const SortTypes = {
   DEFAULT: 'default',
   PRICE: 'price',
   TIME: 'time',
 };
 
-export { CITIES, DESCRIPTION, TYPES, COUNT_POINT, SortTypes };
+const adaptToClient = (point) => {
+  const adaptedPoint = {
+    ...point,
+    dateFrom: point['date_from'],
+    dateTo: point['date_to'],
+    basePrice: point['base_price'],
+    isFavorite: point['is_favorite'],
+  };
+
+  delete adaptedPoint['date_from'];
+  delete adaptedPoint['date_to'];
+  delete adaptedPoint['base_price'];
+  delete adaptedPoint['is_favorite'];
+
+  return adaptedPoint;
+};
+
+const adaptToServer = (point) => {
+  const adaptedPoint = {
+    ...point,
+    ['date_from']: new Date(point.dateFrom).toISOString(),
+    ['date_to']: new Date(point.dateTo).toISOString(),
+    ['base_price']: point.basePrice,
+    ['is_favorite']: point.isFavorite,
+  };
+
+  delete adaptedPoint.dateFrom;
+  delete adaptedPoint.dateTo;
+  delete adaptedPoint.basePrice;
+  delete adaptedPoint.isFavorite;
+
+  return adaptedPoint;
+};
+
+export { CITIES, DESCRIPTION, TYPES, COUNT_POINT, SortTypes, FilterTypes, UpdateType, UserAction, adaptToClient, adaptToServer };

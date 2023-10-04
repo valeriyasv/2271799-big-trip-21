@@ -7,6 +7,17 @@ import dayjs from 'dayjs';
 
 import 'flatpickr/dist/flatpickr.min.css';
 
+const BLANK_POINT = {
+  price: 0,
+  dateFrom: '',
+  dateTo: '',
+  name: '',
+  destination: [],
+  isFavorite: true,
+  type: 'Flight',
+  offers: []
+};
+
 function createTypesTemplate(point) {
   return (
     `
@@ -42,14 +53,14 @@ function createPriceTemplate(point) {
             <span class="visually-hidden">Price</span>
             &euro;
           </label>
-          <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${point.price}">
+          <input class="event__input  event__input--price" id="event-price-1" name="event-price" type="number" pattern="^[ 0-9]+$" value="${point.price}">
         </div>`
   );
 }
 
-function createCitiesTemplate(destination) {
-  const cityDestinations = destination.name;
-  return (`<option value="${cityDestinations}">${cityDestinations}</option>`);
+function createCitiesTemplate() {
+  // const cityDestinations = destination;
+  return '<option value="pp">pp</option>';
 }
 
 function createOffersTemplate(point, typeOffers) {
@@ -79,10 +90,11 @@ function createDescriptionTemplate(point) {
     `<p class="event__destination-description">${point.destination.description}</p>
       <div class="event__photos-container">
       <div class="event__photos-tape">
-  ${
-    point.destination.pictures.map((item) => `
+  ${ point.destination.pictures ?
+      point.destination.pictures.map((item) => `
       <img class="event__photo" src="${item.src}" alt="${item.description}">
       `).join('')
+      : ''
     }
     </div>
       </div>`
@@ -119,7 +131,7 @@ function editPointTemplate({state}) {
               </label>
               <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
               <datalist id="destination-list-1">
-                ${createCitiesTemplate(name)}
+                ${createCitiesTemplate()}
               </datalist>
               </div>
 
@@ -161,13 +173,15 @@ export default class EditPointView extends AbstractStatefulView {
   #pointDestinations = null;
   #datepickerFrom = null;
   #datepickerTo = null;
+  #handleDelete = null;
 
-  constructor({ data, pointDestinations, onSubmitClick, clickResetHandler }) {
+  constructor({ data = BLANK_POINT, pointDestinations, onSubmitClick, clickResetHandler, onDeleteClick }) {
     super();
     this._state = data;
     this.#pointDestinations = pointDestinations;
     this.#handleSubmit = onSubmitClick;
     this.#clickResetHandler = clickResetHandler;
+    this.#handleDelete = onDeleteClick;
     this._setState(EditPointView.parsePointToState({data}));
 
     this._restoreHandlers();
@@ -199,6 +213,9 @@ export default class EditPointView extends AbstractStatefulView {
     this.element.querySelector('.event__rollup-btn')
       .addEventListener('click', this.#clickResetHandler);
 
+    this.element.querySelector('.event__reset-btn')
+      .addEventListener('click', this.#deleteClickHandler);
+
     this.element.querySelector('form')
       .addEventListener('submit', this.#submitHandler);
 
@@ -220,6 +237,12 @@ export default class EditPointView extends AbstractStatefulView {
   #submitHandler = (evt) => {
     evt.preventDefault();
     this.#handleSubmit(EditPointView.parseStateToPoint(this._state));
+  };
+
+
+  #deleteClickHandler = (evt) => {
+    evt.preventDefault();
+    this.#handleDelete(this._state.data);
   };
 
   #typeChangeHandler = (evt) => {

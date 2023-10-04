@@ -1,9 +1,22 @@
-import { mockDestination } from '../mock/destination';
+export default class DestinationsModel {
+  #service = null;
+  #destinations = null;
 
-export default class DestinationModel {
-  #destination = mockDestination;
+  constructor(service) {
+    this.#service = service;
+  }
 
-  get destination() {
-    return this.#destination;
+  async init() {
+    this.#destinations = await this.#service.destinations;
+    return this.#destinations;
+  }
+
+  get() {
+    return this.#destinations;
+  }
+
+  getById(id) {
+    return this.#destinations
+      .find((destination) => destination.id === id);
   }
 }
