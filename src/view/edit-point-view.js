@@ -58,9 +58,9 @@ function createPriceTemplate(point) {
   );
 }
 
-function createCitiesTemplate(destination) {
-  const cityDestinations = destination.name;
-  return (`<option value="${cityDestinations}">${cityDestinations}</option>`);
+function createCitiesTemplate() {
+  // const cityDestinations = destination;
+  return '<option value="pp">pp</option>';
 }
 
 function createOffersTemplate(point, typeOffers) {
@@ -131,7 +131,7 @@ function editPointTemplate({state}) {
               </label>
               <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
               <datalist id="destination-list-1">
-                ${createCitiesTemplate(name)}
+                ${createCitiesTemplate()}
               </datalist>
               </div>
 

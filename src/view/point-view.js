@@ -1,7 +1,8 @@
 import AbstractView from '../framework/view/abstract-view';
 import dayjs from 'dayjs';
 
-function pointItem ({type, name, offers, price, isFavorite, dateFrom, dateTo}) {
+function pointItem ({point, offers, destinations}) {
+  const {type, basePrice, isFavorite, dateFrom, dateTo} = point;
   const startDay = dayjs(dateFrom).format('MMM D').toUpperCase();
   const timeStartHours = dayjs(dateFrom).format('hh');
   const timeStartMinutes = dayjs(dateFrom).format('mm');
@@ -19,7 +20,7 @@ function pointItem ({type, name, offers, price, isFavorite, dateFrom, dateTo}) {
       <div class="event__type">
         <img class="event__type-icon" width="42" height="42" src="img/icons/${srcType}.png" alt="Event type icon">
       </div>
-      <h3 class="event__title">${type} ${name}</h3>
+      <h3 class="event__title">${type} ${destinations.name}</h3>
       <div class="event__schedule">
         <p class="event__time">
           <time class="event__start-time" datetime="${dateFrom}">${timeStartHours}:${timeStartMinutes}</time>
@@ -29,7 +30,7 @@ function pointItem ({type, name, offers, price, isFavorite, dateFrom, dateTo}) {
         <p class="event__duration">${differenceTimeinDays} ${hours}H ${minute}M</p>
       </div>
       <p class="event__price">
-        &euro;&nbsp;<span class="event__price-value">${price}</span>
+        &euro;&nbsp;<span class="event__price-value">${basePrice}</span>
       </p>
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
@@ -38,7 +39,7 @@ function pointItem ({type, name, offers, price, isFavorite, dateFrom, dateTo}) {
       `<li class="event__offer">
           <span class="event__offer-title">${element.title}</span>
           &plus;&euro;&nbsp;
-          <span class="event__offer-price">${element.price}</span>
+          <span class="event__offer-price">${element.basePrice}</span>
         </li>`
     )).join('')
     }
@@ -60,12 +61,17 @@ export default class PointView extends AbstractView {
   #data = null;
   #handleClick = null;
   #onFavoriteClick = null;
+  #pointDestinations = null;
+  #pointOffers = null;
 
-  constructor({data, onEditClick, onFavoriteClick}) {
+  constructor({data, onEditClick, onFavoriteClick, pointDestinations, pointOffers}) {
     super();
     this.#data = data;
     this.#handleClick = onEditClick;
     this.#onFavoriteClick = onFavoriteClick;
+    this.#pointDestinations = pointDestinations;
+    this.#pointOffers = pointOffers;
+
     this.element.querySelector('.event__rollup-btn')
       .addEventListener('click', this.#clickHandler);
     this.element.querySelector('.event__favorite-btn')
@@ -73,7 +79,7 @@ export default class PointView extends AbstractView {
   }
 
   get template() {
-    return pointItem(this.#data);
+    return pointItem({point: this.#data, destinations: this.#pointDestinations, offers: this.#pointOffers});
   }
 
   #clickHandler = (evt) => {

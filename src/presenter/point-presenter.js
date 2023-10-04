@@ -1,7 +1,6 @@
 import {remove, render, replace } from '../framework/render.js';
 import EditPointView from '../view/edit-point-view.js';
 import PointView from '../view/point-view.js';
-import { mockDestination } from '../mock/destination.js';
 import { UserAction, UpdateType } from '../const.js';
 
 const Mode = {
@@ -20,10 +19,15 @@ export default class PointPresenter {
   #point = null;
   #mode = Mode.DEFAULT;
 
-  constructor({pointListContainer, onModeChange, onDataChange}) {
+  #offers = null;
+  #destinations = null;
+
+  constructor({pointListContainer, onModeChange, onDataChange, offers, destinations}) {
     this.#pointListContainer = pointListContainer;
     this.#handleDataChange = onDataChange;
     this.#handleModeChange = onModeChange;
+    this.#offers = offers;
+    this.#destinations = destinations;
   }
 
   init(point) {
@@ -34,14 +38,17 @@ export default class PointPresenter {
     this.#pointComponent = new PointView({
       data: this.#point,
       onEditClick: this.#handleEditClick,
-      onFavoriteClick: this.#handleFavoriteClick
+      onFavoriteClick: this.#handleFavoriteClick,
+      pointDestinations: this.#destinations.getById(point.destination),
+      pointOffers: this.#offers.getByType(point.type),
     });
     this.#editPointComponent = new EditPointView({
       data: this.#point,
-      pointDestinations: mockDestination,
+      pointDestinations: this.#destinations.get(),
       onSubmitClick: this.#handleFormSubmit,
       clickResetHandler: this.#resetClickHandler,
-      onDeleteClick: this.#handleDeleteClick
+      onDeleteClick: this.#handleDeleteClick,
+      pointOffers: this.#offers.get(),
     });
 
     if (prevPointComponent === null || prevEditComponent === null) {
@@ -54,11 +61,47 @@ export default class PointPresenter {
     }
 
     if (this.#mode === Mode.EDITING) {
-      replace(this.#editPointComponent, prevEditComponent);
+      replace(this.#pointComponent, prevEditComponent);
+      this.#mode = Mode.DEFAULT;
     }
 
     remove(prevPointComponent);
     remove(prevEditComponent);
+  }
+
+  setSaving() {
+    if (this.#mode === Mode.EDITING) {
+      this.#editPointComponent.updateElement({
+        isDisabled: true,
+        isSaving: true,
+      });
+    }
+  }
+
+  setDeleting() {
+    if (this.#mode === Mode.EDITING) {
+      this.#editPointComponent.updateElement({
+        isDisabled: true,
+        isDeleting: true,
+      });
+    }
+  }
+
+  setAborting() {
+    if (this.#mode === Mode.DEFAULT) {
+      this.#editPointComponent.shake();
+      return;
+    }
+
+    const resetFormState = () => {
+      this.#editPointComponent.updateElement({
+        isDisabled: false,
+        isSaving: false,
+        isDeleting: false,
+      });
+    };
+
+    this.#editPointComponent.shake(resetFormState);
   }
 
   destroy() {

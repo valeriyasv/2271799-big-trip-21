@@ -54,7 +54,6 @@ export default class FilterPresenter {
   };
 
   #handleFilterTypeChange = (typeFilter) => {
-    console.log(this.#filterModel.filter, 'fil')
     // if (this.#filterModel.filter === typeFilter) {
     //   // eslint-disable-next-line no-useless-return
     //   return;
