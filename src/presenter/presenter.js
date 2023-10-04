@@ -165,7 +165,7 @@ export default class ContainerPresenter {
         this.#renderPointList();
         break;
       case UpdateType.INIT:
-        this.#isLoading = false;
+        // this.#isLoading = false;
         remove(this.#loadingComponent);
         this.#renderPoints();
         break;
