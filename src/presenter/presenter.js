@@ -59,7 +59,7 @@ export default class ContainerPresenter {
     const filtersTypes = this.#filterModel.filter;
     const points = this.#points.points;
     const filteredPoints = filterType[filtersTypes](points);
-
+    console.log(filteredPoints)
     switch (this.#currentSortType) {
       case SortTypes.PRICE:
         filteredPoints.sort((a, b) => b.price - a.price);
@@ -195,7 +195,7 @@ export default class ContainerPresenter {
 
   #renderPoint(point) {
     const pointPresenter = new PointPresenter ({
-      pointListContainer: this.#pointList,
+      pointListContainer: this.#pointList.element,
       onDataChange: this.#handleViewAction,
       onModeChange: this.#handleModeChange,
       destinations: this.#destinations,
