@@ -102,13 +102,8 @@ function createDescriptionTemplate(point) {
 }
 
 function editPointTemplate({state, pointDestinations, nameDestination}) {
-  console.log(nameDestination, 'kkkk')
   const {data} = state;
   const {type, offers} = data;
-  // const name = pointDestinations.getById(data.destination);
-  // console.log(pointDestinations.getById(data.destination), 'gggg');
-
-  // const typeOffers = data.filter((item) => item.types === _.capitalize(type));
 
   return (
     ` <li class="trip-events__item">
