@@ -101,11 +101,12 @@ function createDescriptionTemplate(point) {
   );
 }
 
-function editPointTemplate({state, pointDestinations}) {
+function editPointTemplate({state, pointDestinations, nameDestination}) {
+  console.log(nameDestination, 'kkkk')
   const {data} = state;
   const {type, offers} = data;
-  const name = pointDestinations.getById(data.destination);
-  console.log(pointDestinations.getById(data.destination), 'gggg');
+  // const name = pointDestinations.getById(data.destination);
+  // console.log(pointDestinations.getById(data.destination), 'gggg');
 
   // const typeOffers = data.filter((item) => item.types === _.capitalize(type));
 
@@ -131,7 +132,7 @@ function editPointTemplate({state, pointDestinations}) {
               <label class="event__label  event__type-output" for="event-destination-1">
                 ${type}
               </label>
-              <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${name}" list="destination-list-1">
+              <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${nameDestination}" list="destination-list-1">
               <datalist id="destination-list-1">
                 ${createCitiesTemplate(pointDestinations)}
               </datalist>
@@ -177,17 +178,19 @@ export default class EditPointView extends AbstractStatefulView {
   #datepickerFrom = null;
   #datepickerTo = null;
   #handleDelete = null;
+  #nameDestination = null;
 
-  constructor({ data = BLANK_POINT, pointDestinations, pointsOffers, onSubmitClick, clickResetHandler, onDeleteClick }) {
+  constructor({ data = BLANK_POINT, nameDestination, pointDestinations, pointsOffers, onSubmitClick, clickResetHandler, onDeleteClick }) {
     super();
     this._state = data;
+    this.#nameDestination = nameDestination;
     this.#pointDestinations = pointDestinations;
     this.#pointsOffers = pointsOffers;
     this.#handleSubmit = onSubmitClick;
     this.#clickResetHandler = clickResetHandler;
     this.#handleDelete = onDeleteClick;
     this._setState(EditPointView.parsePointToState({data}));
-    console.log(pointDestinations.name, 'ppp');
+    // console.log(pointDestinations.name, 'ppp');
     this._restoreHandlers();
   }
 
