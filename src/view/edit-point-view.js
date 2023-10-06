@@ -58,9 +58,8 @@ function createPriceTemplate(point) {
 }
 
 function createCitiesTemplate(destination) {
-  // const cityDestinations = destination;
-  destination.map((item) => (`<option value="pp">${item.name}</option>`)).join('');
-  // console.log(destination, 'pp')
+  return destination.map((item) => `
+    <option value="${item.name}">${item.name}</option>`);
 }
 
 function createOffersTemplate(point) {
@@ -101,10 +100,10 @@ function createDescriptionTemplate(point) {
   );
 }
 
-function editPointTemplate({state, pointDestinations, nameDestination}) {
+function editPointTemplate({state, pointDestinations}) {
   const {data} = state;
   const {type, offers} = data;
-
+  console.log(data)
   return (
     ` <li class="trip-events__item">
         <form class="event event--edit" action="#" method="post">
@@ -127,7 +126,7 @@ function editPointTemplate({state, pointDestinations, nameDestination}) {
               <label class="event__label  event__type-output" for="event-destination-1">
                 ${type}
               </label>
-              <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${nameDestination}" list="destination-list-1">
+              <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${data.destination}" list="destination-list-1">
               <datalist id="destination-list-1">
                 ${createCitiesTemplate(pointDestinations)}
               </datalist>
@@ -165,7 +164,6 @@ function editPointTemplate({state, pointDestinations, nameDestination}) {
   );
 }
 export default class EditPointView extends AbstractStatefulView {
-  // #data = null;
   #handleSubmit = null;
   #clickResetHandler = null;
   #pointDestinations = null;
@@ -178,6 +176,7 @@ export default class EditPointView extends AbstractStatefulView {
   constructor({ data = BLANK_POINT, nameDestination, pointDestinations, pointsOffers, onSubmitClick, clickResetHandler, onDeleteClick }) {
     super();
     this._state = data;
+    this._state.destination = nameDestination.name;
     this.#nameDestination = nameDestination;
     this.#pointDestinations = pointDestinations;
     this.#pointsOffers = pointsOffers;
@@ -185,7 +184,6 @@ export default class EditPointView extends AbstractStatefulView {
     this.#clickResetHandler = clickResetHandler;
     this.#handleDelete = onDeleteClick;
     this._setState(EditPointView.parsePointToState({data}));
-    // console.log(pointDestinations.name, 'ppp');
     this._restoreHandlers();
   }
 
@@ -193,7 +191,8 @@ export default class EditPointView extends AbstractStatefulView {
     return editPointTemplate({
       state: this._state,
       pointDestinations: this.#pointDestinations,
-      pointsOffers: this.#pointsOffers
+      pointsOffers: this.#pointsOffers,
+      nameDestination: this.#nameDestination,
     });
   }
 

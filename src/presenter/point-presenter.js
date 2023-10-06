@@ -50,7 +50,6 @@ export default class PointPresenter {
       onDeleteClick: this.#handleDeleteClick,
       pointOffers: this.#offers.get(),
     });
-    // console.log(this.#offers.getByType(point.type), 'f')
 
     if (prevPointComponent === null || prevEditComponent === null) {
       render(this.#pointComponent, this.#pointListContainer);
