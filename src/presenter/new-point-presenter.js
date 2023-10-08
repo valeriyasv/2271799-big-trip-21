@@ -7,7 +7,7 @@ export default class NewPointPresenter {
   #handleDataChange = null;
   #handleDestroy = null;
   #destinationModel = null;
-
+  #onDeleteClick = null;
   #pointEditCopmonent = null;
 
   constructor ({pointListContainer, onDataChange, onDestroy}) {
@@ -25,7 +25,8 @@ export default class NewPointPresenter {
     this.#pointEditCopmonent = new EditPointView({
       pointDestinations: this.#destinationModel,
       onSubmitClick: this.#handleFormSubmit,
-      clickResetHandler: this.#handleDeleteClick
+      clickResetHandler: this.#handleDeleteClick,
+      onDeleteClick: this.#onDeleteClick,
     });
 
     render(this.#pointEditCopmonent, this.#pointListContainer, RenderPosition.AFTERBEGIN);

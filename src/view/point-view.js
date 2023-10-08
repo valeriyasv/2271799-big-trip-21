@@ -13,6 +13,7 @@ function pointItem ({point, offers, destinations}) {
   const minute = differenceTimeinMinutes % 60;
   const differenceTimeinDays = dayjs(dateTo).diff(dateFrom, 'day') > 0 ? `${dayjs(dateTo).diff(dateFrom, 'day')}D` : '';
   const srcType = type.toLowerCase();
+
   return (
     `<li class="trip-events__item">
     <div class="event">
@@ -35,7 +36,7 @@ function pointItem ({point, offers, destinations}) {
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">
       ${
-    offers.map((element) => (
+    offers.filter((item) => point.offers.includes(item.id)).map((element) => (
       `<li class="event__offer">
           <span class="event__offer-title">${element.title}</span>
           &plus;&euro;&nbsp;
@@ -79,7 +80,11 @@ export default class PointView extends AbstractView {
   }
 
   get template() {
-    return pointItem({point: this.#data, destinations: this.#pointDestinations, offers: this.#pointOffers});
+    return pointItem({
+      point: this.#data,
+      destinations: this.#pointDestinations,
+      offers: this.#pointOffers
+    });
   }
 
   #clickHandler = (evt) => {

@@ -32,6 +32,7 @@ export default class PointPresenter {
 
   init(point) {
     this.#point = point;
+    console.log(point);
     const prevPointComponent = this.#pointComponent;
     const prevEditComponent = this.#editPointComponent;
     this.#pointComponent = new PointView({
@@ -48,9 +49,8 @@ export default class PointPresenter {
       clickResetHandler: this.#resetClickHandler,
       nameDestination: this.#destinations.getById(point.destination),
       onDeleteClick: this.#handleDeleteClick,
-      pointOffers: this.#offers.get(),
+      pointsOffers: this.#offers.get(),
     });
-
     if (prevPointComponent === null || prevEditComponent === null) {
       render(this.#pointComponent, this.#pointListContainer);
       return;
