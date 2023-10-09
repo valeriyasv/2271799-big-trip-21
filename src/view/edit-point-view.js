@@ -5,6 +5,7 @@ import {TYPES} from '../const';
 import dayjs from 'dayjs';
 
 import 'flatpickr/dist/flatpickr.min.css';
+import { cond } from 'lodash';
 
 const BLANK_POINT = {
   basePrice: 0,
@@ -99,11 +100,11 @@ function createOffersTemplate(point, offers) {
 function createDescriptionTemplate(point) {
 
   return (
-    `<p class="event__destination-description">${point.description.description}</p>
+    `<p class="event__destination-description">${point.description}</p>
       <div class="event__photos-container">
       <div class="event__photos-tape">
-  ${ point.description.pictures ?
-      point.description.pictures.map((item) => `
+  ${ point.pictures ?
+      point.pictures.map((item) => `
       <img class="event__photo" src="${item.src}" alt="${item.description}">
       `).join('')
       : ''
@@ -116,7 +117,8 @@ function createDescriptionTemplate(point) {
 function editPointTemplate({state, pointDestinations, pointsOffers}) {
   const {data} = state;
   const {type, offers} = data;
-  const typeOffers = pointsOffers.find((item) => item.type === data.type).offers;
+  const pointDestination = pointDestinations ? pointDestinations.find((item) => item.id === data.destination) : [];
+  const typeOffers = pointsOffers ? pointsOffers.find((item) => item.type === data.type).offers : [];
   return (
     ` <li class="trip-events__item">
         <form class="event event--edit" action="#" method="post">
@@ -139,7 +141,7 @@ function editPointTemplate({state, pointDestinations, pointsOffers}) {
               <label class="event__label  event__type-output" for="event-destination-1">
                 ${type}
               </label>
-              <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${data.destination}" list="destination-list-1">
+              <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${pointDestination.name}" list="destination-list-1">
               <datalist id="destination-list-1">
                 ${createCitiesTemplate(pointDestinations)}
               </datalist>
@@ -167,7 +169,7 @@ function editPointTemplate({state, pointDestinations, pointsOffers}) {
             <section class="event__section  event__section--destination">
               <h3 class="event__section-title  event__section-title--destination">Destination</h3>
 
-              ${createDescriptionTemplate(data)}
+              ${createDescriptionTemplate(pointDestination)}
 
             </section>
         </form>
@@ -196,15 +198,13 @@ export default class EditPointView extends AbstractStatefulView {
     }) {
     super();
     this._state = data;
-    this._state.destination = nameDestination.name;
-    this._state.description = pointDestinations.find((item) => item.name === this._state.destination);
+    this._setState(EditPointView.parsePointToState({data}));
     this.#nameDestination = nameDestination;
     this.#pointDestinations = pointDestinations;
     this.#handleSubmit = onSubmitClick;
     this.#clickResetHandler = clickResetHandler;
     this.#handleDelete = onDeleteClick;
     this.#pointsOffers = pointsOffers;
-    this._setState(EditPointView.parsePointToState({data}));
     this._restoreHandlers();
   }
 
@@ -212,8 +212,7 @@ export default class EditPointView extends AbstractStatefulView {
     return editPointTemplate({
       state: this._state,
       pointDestinations: this.#pointDestinations,
-      pointsOffers: this.#pointsOffers,
-      nameDestination: this.#nameDestination,
+      pointsOffers: this.#pointsOffers
     });
   }
 
@@ -281,12 +280,12 @@ export default class EditPointView extends AbstractStatefulView {
 
   #destinationChangeHandler = (evt) => {
     const selectedDestination = this.#pointDestinations.find((pointDestination) => pointDestination.name === evt.target.value);
+    const selectedDestinationId = (selectedDestination) ? selectedDestination.id : this._state.data.destination;
 
     this.updateElement({
       data: {
         ...this._state.data,
-        destination: selectedDestination.name,
-        description: selectedDestination
+        destination: selectedDestinationId,
       }
     });
   };

@@ -32,7 +32,6 @@ export default class PointPresenter {
 
   init(point) {
     this.#point = point;
-    console.log(point);
     const prevPointComponent = this.#pointComponent;
     const prevEditComponent = this.#editPointComponent;
     this.#pointComponent = new PointView({
