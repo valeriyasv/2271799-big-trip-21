@@ -46,9 +46,11 @@ export default class ContainerPresenter {
     this.#offers = offers;
 
     this.#newPointPresenter = new NewPointPresenter({
-      pointListContainer: this.#pointList.element,
+      pointListContainer: this.#pointList,
       onDataChange: this.#handleViewAction,
-      onDestroy: onNewPointDestroy
+      onDestroy: onNewPointDestroy,
+      destinations: this.#destinations,
+      offers: this.#offers
     });
     this.#points.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);

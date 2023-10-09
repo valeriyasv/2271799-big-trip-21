@@ -1,20 +1,21 @@
-// import _ from 'lodash';
+import _ from 'lodash';
 import flatpickr from 'flatpickr';
 import AbstractStatefulView from '../framework/view/abstract-stateful-view.js';
 import {TYPES} from '../const';
 import dayjs from 'dayjs';
+import he from 'he';
 
 import 'flatpickr/dist/flatpickr.min.css';
-import { cond } from 'lodash';
+// import { cond } from 'lodash';
 
 const BLANK_POINT = {
-  basePrice: 0,
-  dateFrom: '',
-  dateTo: '',
-  description: {name: ''},
-  isFavorite: true,
-  type: 'Flight',
-  offers: []
+  basePrice: '0',
+  dateFrom: null,
+  dateTo: null,
+  destination: '',
+  isFavorite: false,
+  offers: [],
+  type: 'flight',
 };
 
 function createTypesTemplate(point) {
@@ -64,8 +65,8 @@ function createPriceTemplate(point) {
 }
 
 function createCitiesTemplate(destination) {
-  return destination.map((item) => `
-    <option value="${item.name}">${item.name}</option>`);
+  return (destination ? destination.map((item) => `
+    <option value="${item.name}">${item.name}</option>`) : '');
 }
 
 function createOffersTemplate(point, offers) {
@@ -141,7 +142,12 @@ function editPointTemplate({state, pointDestinations, pointsOffers}) {
               <label class="event__label  event__type-output" for="event-destination-1">
                 ${type}
               </label>
-              <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${pointDestination.name}" list="destination-list-1">
+              <input class="event__input  event__input--destination"
+              id="event-destination-1"
+              type="text"
+              name="event-destination"
+              value="${he.encode(pointDestination.name)}"
+              list="destination-list-1">
               <datalist id="destination-list-1">
                 ${createCitiesTemplate(pointDestinations)}
               </datalist>
@@ -189,7 +195,6 @@ export default class EditPointView extends AbstractStatefulView {
   constructor(
     {
       data = BLANK_POINT,
-      nameDestination,
       pointDestinations,
       onSubmitClick,
       clickResetHandler,
@@ -199,7 +204,6 @@ export default class EditPointView extends AbstractStatefulView {
     super();
     this._state = data;
     this._setState(EditPointView.parsePointToState({data}));
-    this.#nameDestination = nameDestination;
     this.#pointDestinations = pointDestinations;
     this.#handleSubmit = onSubmitClick;
     this.#clickResetHandler = clickResetHandler;
@@ -258,6 +262,7 @@ export default class EditPointView extends AbstractStatefulView {
   };
 
   #submitHandler = (evt) => {
+    // console.log()
     evt.preventDefault();
     this.#handleSubmit(EditPointView.parseStateToPoint(this._state));
   };
@@ -279,7 +284,7 @@ export default class EditPointView extends AbstractStatefulView {
   };
 
   #destinationChangeHandler = (evt) => {
-    const selectedDestination = this.#pointDestinations.find((pointDestination) => pointDestination.name === evt.target.value);
+    const selectedDestination = this.#pointDestinations ? this.#pointDestinations.find((pointDestination) => pointDestination.name === _.capitalize(evt.target.value)) : '';
     const selectedDestinationId = (selectedDestination) ? selectedDestination.id : this._state.data.destination;
 
     this.updateElement({
@@ -304,7 +309,7 @@ export default class EditPointView extends AbstractStatefulView {
     this._setState({
       data: {
         ...this._state.data,
-        price: evt.target.value,
+        basePrice: evt.target.valueAsNumber,
         offer: []
       }
     });
